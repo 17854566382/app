@@ -1,0 +1,86 @@
+<!--pages/detail/detail.wxml-->
+<view class="container">
+  <!-- 图片展示区域 -->
+  <view class="image-section" wx:if="{{product}}">
+    <swiper class="product-swiper" indicator-dots circular>
+      <swiper-item wx:for="{{product.images}}" wx:key="index">
+        <image src="{{item}}" mode="aspectFill" class="product-image"/>
+      </swiper-item>
+    </swiper>
+  </view>
+
+  <!-- 加载中 -->
+  <view class="loading" wx:if="{{loading}}">
+    <text>加载中...</text>
+  </view>
+
+  <!-- 产品不存在 -->
+  <view class="not-found" wx:if="{{!loading && !product}}">
+    <text>产品不存在</text>
+  </view>
+
+  <!-- 产品信息 -->
+  <view class="info-section card" wx:if="{{product}}">
+    <view class="price-row">
+      <text class="price">¥{{product.priceText}}</text>
+      <text class="tag hot" wx:if="{{product.tag}}">{{product.tag}}</text>
+    </view>
+    <text class="product-name">{{product.name}}</text>
+    <text class="product-desc">{{product.desc}}</text>
+  </view>
+
+  <!-- 颜色选择 -->
+  <view class="section card" wx:if="{{product && product.colors && product.colors.length > 0}}">
+    <view class="section-title">选择颜色</view>
+    <view class="color-list">
+      <view
+        class="color-item {{selectedColor.name === item.name ? 'active' : ''}}"
+        wx:for="{{product.colors}}"
+        wx:key="name"
+        bindtap="selectColor"
+        data-index="{{index}}"
+      >
+        <view class="color-swatch" style="background: {{item.value}}; {{item.value === '#F0EEE8' ? 'border-color: #ddd;' : ''}}"></view>
+        <text class="color-name">{{item.name}}</text>
+        <text class="color-check" wx:if="{{selectedColor.name === item.name}}"></text>
+      </view>
+    </view>
+    <view class="selected-color-tip" wx:if="{{selectedColor}}">
+      <text>已选：<text class="tip-color">{{selectedColor.name}}</text></text>
+    </view>
+  </view>
+
+  <!-- 车辆配置参数 -->
+  <view class="section card" wx:if="{{product && product.specs}}">
+    <view class="section-title">车辆配置</view>
+    <view class="spec-grid">
+      <view class="spec-item" wx:for="{{product.specs}}" wx:key="label">
+        <text class="spec-label">{{item.label}}</text>
+        <text class="spec-value">{{item.value}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 产品特点 -->
+  <view class="section card" wx:if="{{product && product.features}}">
+    <view class="section-title">产品特点</view>
+    <view class="feature-list">
+      <view class="feature-item" wx:for="{{product.features}}" wx:key="*this">
+        <text class="feature-icon">✓</text>
+        <text class="feature-text">{{item}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 底部操作栏 -->
+  <view class="bottom-bar" wx:if="{{product}}">
+    <view class="bar-left">
+      <view class="total-price">
+        <text class="price-label">参考价：</text>
+        <text class="price-num">¥{{product.priceText}}</text>
+      </view>
+      <text class="selected-info" wx:if="{{selectedColor}}">{{selectedColor.name}}</text>
+    </view>
+    <button class="btn-submit" bindtap="callService">联系购买</button>
+  </view>
+</view>

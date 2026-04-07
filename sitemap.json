@@ -1,0 +1,7 @@
+{
+  "description": "海宝新能源小程序页面",
+  "rules": [{
+    "action": "allow",
+    "page": "*"
+  }]
+}

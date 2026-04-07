@@ -1,0 +1,42 @@
+<!--pages/order/order.wxml-->
+<view class="container">
+  <!-- 订单列表 -->
+  <view class="order-list" wx:if="{{orders.length > 0}}">
+    <view class="order-card" wx:for="{{orders}}" wx:key="id">
+      <view class="order-header">
+        <text class="order-no">订单号：{{item.orderNo}}</text>
+        <text class="order-status {{item.status}}">{{item.statusText}}</text>
+      </view>
+      
+      <view class="order-content" bindtap="goToDetail" data-id="{{item.id}}">
+        <image src="{{item.image}}" class="order-image" mode="aspectFill"/>
+        <view class="order-info">
+          <text class="product-name">{{item.productName}}</text>
+          <text class="product-spec">{{item.color}} | {{item.config}}</text>
+          <text class="order-time">{{item.createTime}}</text>
+        </view>
+        <view class="order-price">
+          <text class="price">¥{{item.price}}</text>
+          <text class="quantity">x{{item.quantity}}</text>
+        </view>
+      </view>
+      
+      <view class="order-footer">
+        <text class="total">共{{item.quantity}}件 合计：<text class="total-price">¥{{item.totalPrice}}</text></text>
+        <view class="action-btns">
+          <button class="btn-default" size="mini" wx:if="{{item.status === 'pending'}}" bindtap="cancelOrder" data-id="{{item.id}}">取消订单</button>
+          <button class="btn-primary" size="mini" wx:if="{{item.status === 'pending'}}" bindtap="payOrder" data-id="{{item.id}}">立即支付</button>
+          <button class="btn-default" size="mini" wx:if="{{item.status === 'paid'}}" bindtap="contactService" data-id="{{item.id}}">联系客服</button>
+          <button class="btn-primary" size="mini" wx:if="{{item.status === 'delivered'}}" bindtap="confirmReceive" data-id="{{item.id}}">确认收货</button>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 空状态 -->
+  <view class="empty-state" wx:if="{{orders.length === 0 && !loading}}">
+    <image src="/images/empty-order.png" class="empty-image"/>
+    <text class="empty-text">暂无订单</text>
+    <button class="btn-primary" bindtap="goToCategory">去选车</button>
+  </view>
+</view>

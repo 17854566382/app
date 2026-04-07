@@ -1,0 +1,85 @@
+<!--pages/index/index.wxml-->
+<view class="container">
+  <!-- Banner轮播 -->
+  <swiper class="banner" indicator-dots autoplay circular interval="3000">
+    <swiper-item wx:for="{{banners}}" wx:key="id">
+      <image src="{{item.image}}" mode="aspectFill" class="banner-img"/>
+    </swiper-item>
+  </swiper>
+
+  <!-- 快捷入口 -->
+  <view class="quick-entry card">
+    <view class="entry-item" bindtap="goToCategory">
+      <view class="entry-icon" style="background: #FF6B00;">
+        <text class="iconfont">🛵</text>
+      </view>
+      <text class="entry-text">选车下单</text>
+    </view>
+    <view class="entry-item" bindtap="goToOrders">
+      <view class="entry-icon" style="background: #67C23A;">
+        <text class="iconfont">📋</text>
+      </view>
+      <text class="entry-text">我的订单</text>
+    </view>
+    <view class="entry-item" bindtap="callService">
+      <view class="entry-icon" style="background: #409EFF;">
+        <text class="iconfont">📞</text>
+      </view>
+      <text class="entry-text">联系客服</text>
+    </view>
+    <view class="entry-item" bindtap="goToStore">
+      <view class="entry-icon" style="background: #E6A23C;">
+        <text class="iconfont">🏪</text>
+      </view>
+      <text class="entry-text">门店导航</text>
+    </view>
+  </view>
+
+  <!-- 热门车型 -->
+  <view class="section">
+    <view class="section-header">
+      <text class="section-title">热门车型</text>
+      <text class="more" bindtap="goToCategory">更多 ></text>
+    </view>
+    <view class="product-list">
+      <view class="product-item" wx:for="{{hotProducts}}" wx:key="id" bindtap="goToDetail" data-id="{{item.id}}">
+        <image src="{{item.image}}" mode="aspectFill" class="product-img"/>
+        <view class="product-info">
+          <text class="product-name">{{item.name}}</text>
+          <text class="product-desc">{{item.desc}}</text>
+          <view class="product-bottom">
+            <text class="price">¥{{item.price}}</text>
+            <text class="tag">{{item.tag}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 品牌优势 -->
+  <view class="section card">
+    <text class="section-title">品牌优势</text>
+    <view class="advantage-list">
+      <view class="advantage-item">
+        <text class="advantage-icon">🔋</text>
+        <text class="advantage-title">超长续航</text>
+        <text class="advantage-desc">一次充电可跑80-120公里</text>
+      </view>
+      <view class="advantage-item">
+        <text class="advantage-icon">🛡️</text>
+        <text class="advantage-title">品质保障</text>
+        <text class="advantage-desc">整车质保3年，电池保5年</text>
+      </view>
+      <view class="advantage-item">
+        <text class="advantage-icon">🎨</text>
+        <text class="advantage-title">个性定制</text>
+        <text class="advantage-desc">多色可选，支持个性化定制</text>
+      </view>
+      <view class="advantage-item">
+        <text class="advantage-icon">🚚</text>
+        <text class="advantage-title">送货上门</text>
+        <text class="advantage-desc">市区免费送货上门</text>
+      </view>
+    </view>
+  </view>
+</view>
