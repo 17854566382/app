@@ -26,7 +26,7 @@
       <text class="tag hot" wx:if="{{product.tag}}">{{product.tag}}</text>
     </view>
     <text class="product-name">{{product.name}}</text>
-    <text class="product-desc">{{product.desc}}</text>
+    <text class="product-desc">{{product.description}}</text>
   </view>
 
   <!-- 颜色选择 -->

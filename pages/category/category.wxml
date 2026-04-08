@@ -14,7 +14,7 @@
     <view class="product-grid">
       <view class="product-card" wx:for="{{products}}" wx:key="id" bindtap="goToDetail" data-id="{{item.id}}">
         <view class="product-image-wrap">
-          <image src="{{item.images[0]}}" mode="aspectFill" class="product-image"/>
+          <image src="{{item.image}}" mode="aspectFill" class="product-image"/>
           <view class="tag-wrap" wx:if="{{item.tag}}">
             <text class="product-tag">{{item.tag}}</text>
           </view>
