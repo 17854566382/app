@@ -4,7 +4,8 @@
     "pages/category/category",
     "pages/detail/detail",
     "pages/order/order",
-    "pages/user/user"
+    "pages/user/user",
+    "pages/admin/admin"
   ],
   "window": {
     "backgroundTextStyle": "light",

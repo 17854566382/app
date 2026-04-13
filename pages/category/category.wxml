@@ -2,11 +2,14 @@
 <view class="container">
   <!-- 分类筛选 -->
   <view class="filter-bar">
-    <scroll-view scroll-x class="filter-scroll">
-      <view class="filter-item {{currentCategory === index ? 'active' : ''}}" 
+    <view class="filter-tabs">
+      <view class="filter-tab {{currentCategory === index ? 'active' : ''}}" 
             wx:for="{{categories}}" wx:key="id"
-            bindtap="selectCategory" data-index="{{index}}">{{item.name}}</view>
-    </scroll-view>
+            bindtap="selectCategory" data-index="{{index}}">
+        <text class="tab-text">{{item.name}}</text>
+        <view class="tab-indicator" wx:if="{{currentCategory === index}}"></view>
+      </view>
+    </view>
   </view>
 
   <!-- 产品列表 -->

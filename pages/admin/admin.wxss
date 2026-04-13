@@ -1,0 +1,547 @@
+/* pages/admin/admin.wxss */
+.container {
+  padding-bottom: 40rpx;
+  background: #f5f5f5;
+  min-height: 100vh;
+}
+
+.header {
+  background: linear-gradient(135deg, #FF6B00 0%, #FF8C3A 100%);
+  padding: 40rpx 30rpx;
+}
+
+.title {
+  font-size: 40rpx;
+  font-weight: 700;
+  color: #fff;
+  display: block;
+  margin-bottom: 8rpx;
+}
+
+.subtitle {
+  font-size: 26rpx;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.section {
+  background: #fff;
+  margin: 20rpx;
+  border-radius: 16rpx;
+  padding: 30rpx;
+}
+
+.section-title {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 24rpx;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.add-link {
+  font-size: 26rpx;
+  color: #FF6B00;
+  font-weight: 400;
+}
+
+.form-item {
+  margin-bottom: 24rpx;
+}
+
+.label {
+  font-size: 28rpx;
+  color: #666;
+  display: block;
+  margin-bottom: 12rpx;
+}
+
+.input {
+  width: 100%;
+  height: 80rpx;
+  background: #f8f8f8;
+  border-radius: 12rpx;
+  padding: 0 24rpx;
+  font-size: 28rpx;
+  box-sizing: border-box;
+}
+
+.textarea {
+  width: 100%;
+  height: 160rpx;
+  background: #f8f8f8;
+  border-radius: 12rpx;
+  padding: 20rpx 24rpx;
+  font-size: 28rpx;
+  box-sizing: border-box;
+}
+
+.price-input {
+  display: flex;
+  align-items: center;
+  background: #f8f8f8;
+  border-radius: 12rpx;
+  padding-right: 24rpx;
+}
+
+.price-unit {
+  font-size: 32rpx;
+  color: #FF6B00;
+  padding: 0 24rpx;
+}
+
+.price-input .input {
+  background: transparent;
+  flex: 1;
+}
+
+.picker {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 80rpx;
+  background: #f8f8f8;
+  border-radius: 12rpx;
+  padding: 0 24rpx;
+}
+
+.picker-value {
+  font-size: 28rpx;
+  color: #333;
+}
+
+.picker-placeholder {
+  font-size: 28rpx;
+  color: #999;
+}
+
+.picker-arrow {
+  font-size: 20rpx;
+  color: #999;
+}
+
+.tags-wrap {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.tag-item {
+  padding: 12rpx 28rpx;
+  background: #f5f5f5;
+  border-radius: 32rpx;
+  font-size: 26rpx;
+  color: #666;
+  margin-right: 16rpx;
+  margin-bottom: 16rpx;
+}
+
+.tag-item.active {
+  background: linear-gradient(135deg, #FF6B00 0%, #FF8C3A 100%);
+  color: #fff;
+}
+
+/* 图片上传 - 按颜色分组 */
+.color-groups {
+  margin-top: 16rpx;
+}
+
+.color-group {
+  background: #f8f8f8;
+  border-radius: 12rpx;
+  padding: 20rpx;
+  margin-bottom: 20rpx;
+}
+
+.color-group-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 16rpx;
+}
+
+.color-preview-small {
+  width: 40rpx;
+  height: 40rpx;
+  border-radius: 8rpx;
+  border: 2rpx solid #ddd;
+  margin-right: 12rpx;
+}
+
+.color-name-input {
+  width: 160rpx;
+  height: 60rpx;
+  background: #fff;
+  border-radius: 8rpx;
+  padding: 0 16rpx;
+  font-size: 26rpx;
+  margin-right: 12rpx;
+}
+
+.color-value-input {
+  width: 140rpx;
+  height: 60rpx;
+  background: #fff;
+  border-radius: 8rpx;
+  padding: 0 16rpx;
+  font-size: 24rpx;
+  margin-right: 12rpx;
+}
+
+.remove-group {
+  font-size: 36rpx;
+  color: #ff4d4f;
+  padding: 0 8rpx;
+}
+
+.group-images {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.image-item {
+  position: relative;
+  width: 140rpx;
+  height: 140rpx;
+  margin-right: 16rpx;
+  margin-bottom: 16rpx;
+  border-radius: 8rpx;
+  overflow: hidden;
+}
+
+.image-item image {
+  width: 100%;
+  height: 100%;
+}
+
+.image-add.small {
+  width: 140rpx;
+  height: 140rpx;
+  background: #fff;
+  border: 2rpx dashed #ddd;
+}
+
+.image-tags {
+  clear: both;
+}
+
+.image-tag {
+  font-size: 22rpx;
+  color: #666;
+}
+
+.image-tag.placeholder {
+  color: #999;
+}
+
+/* 旧版图片上传（保留兼容） */
+.images-wrap {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.image-item {
+  position: relative;
+  width: 180rpx;
+  height: 180rpx;
+  margin-right: 20rpx;
+  margin-bottom: 20rpx;
+  border-radius: 12rpx;
+  overflow: hidden;
+}
+
+.image-item image {
+  width: 100%;
+  height: 100%;
+}
+
+.remove-btn {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 40rpx;
+  height: 40rpx;
+  background: rgba(0, 0, 0, 0.6);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28rpx;
+}
+
+.image-add {
+  width: 180rpx;
+  height: 180rpx;
+  background: #f8f8f8;
+  border: 2rpx dashed #ddd;
+  border-radius: 12rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.add-icon {
+  font-size: 48rpx;
+  color: #ccc;
+}
+
+.add-text {
+  font-size: 22rpx;
+  color: #999;
+  margin-top: 8rpx;
+}
+
+.tip {
+  font-size: 22rpx;
+  color: #999;
+}
+
+/* 颜色配置 */
+.color-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 16rpx;
+  padding: 16rpx;
+  background: #f8f8f8;
+  border-radius: 12rpx;
+}
+
+.color-name {
+  flex: 1;
+  font-size: 28rpx;
+  background: transparent;
+}
+
+.color-picker-wrap {
+  display: flex;
+  align-items: center;
+  margin: 0 16rpx;
+}
+
+.color-preview {
+  width: 48rpx;
+  height: 48rpx;
+  border-radius: 8rpx;
+  border: 2rpx solid #ddd;
+  margin-right: 12rpx;
+}
+
+.color-value {
+  width: 140rpx;
+  font-size: 24rpx;
+  background: transparent;
+}
+
+.remove-color {
+  font-size: 32rpx;
+  color: #999;
+  padding: 0 12rpx;
+}
+
+/* 规格参数 */
+.spec-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 16rpx;
+  padding: 16rpx;
+  background: #f8f8f8;
+  border-radius: 12rpx;
+}
+
+.spec-label {
+  width: 200rpx;
+  font-size: 28rpx;
+  background: transparent;
+}
+
+.spec-value {
+  flex: 1;
+  font-size: 28rpx;
+  background: transparent;
+}
+
+.remove-spec {
+  font-size: 32rpx;
+  color: #999;
+  padding: 0 12rpx;
+}
+
+/* 特色功能 */
+.feature-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 16rpx;
+}
+
+.feature-input {
+  flex: 1;
+  height: 72rpx;
+  background: #f8f8f8;
+  border-radius: 12rpx;
+  padding: 0 24rpx;
+  font-size: 28rpx;
+}
+
+.remove-feature {
+  font-size: 32rpx;
+  color: #999;
+  padding: 0 12rpx;
+}
+
+/* 按钮 */
+.btn-wrap {
+  padding: 30rpx;
+}
+
+.btn-submit {
+  background: linear-gradient(135deg, #FF6B00 0%, #FF8C3A 100%);
+  color: #fff;
+  font-size: 32rpx;
+  height: 88rpx;
+  border-radius: 44rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-submit::after {
+  border: none;
+}
+
+.btn-cancel {
+  background: #fff;
+  color: #666;
+  font-size: 28rpx;
+  height: 80rpx;
+  border-radius: 40rpx;
+  border: 2rpx solid #ddd;
+  margin-top: 20rpx;
+}
+
+.btn-cancel::after {
+  border: none;
+}
+
+/* 商品列表 */
+.product-list {
+  margin-top: 16rpx;
+}
+
+.product-row {
+  display: flex;
+  align-items: center;
+  padding: 20rpx 0;
+  border-bottom: 1rpx solid #f0f0f0;
+}
+
+.product-row:last-child {
+  border-bottom: none;
+}
+
+.product-thumb {
+  width: 100rpx;
+  height: 100rpx;
+  border-radius: 8rpx;
+  margin-right: 20rpx;
+}
+
+.product-info {
+  flex: 1;
+}
+
+.product-name {
+  font-size: 28rpx;
+  color: #333;
+  display: block;
+  margin-bottom: 6rpx;
+}
+
+.product-category {
+  font-size: 24rpx;
+  color: #999;
+}
+
+.product-actions {
+  display: flex;
+}
+
+.action-btn {
+  font-size: 26rpx;
+  padding: 12rpx 24rpx;
+  border-radius: 8rpx;
+  margin-left: 16rpx;
+}
+
+.action-btn.edit {
+  background: #fff3e6;
+  color: #FF6B00;
+}
+
+.action-btn.delete {
+  background: #fff0f0;
+  color: #ff4d4f;
+}
+/* 颜色选择弹窗 */
+.color-picker-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+  display: flex;
+  align-items: flex-end;
+}
+
+.color-picker-content {
+  width: 100%;
+  background: #fff;
+  border-radius: 24rpx 24rpx 0 0;
+  padding: 30rpx;
+  padding-bottom: calc(30rpx + env(safe-area-inset-bottom));
+}
+
+.color-picker-title {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #333;
+  text-align: center;
+  margin-bottom: 30rpx;
+}
+
+.color-picker-grid {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.color-picker-item {
+  width: calc(25% - 15rpx);
+  margin-right: 20rpx;
+  margin-bottom: 24rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.color-picker-item:nth-child(4n) {
+  margin-right: 0;
+}
+
+.color-picker-swatch {
+  width: 100rpx;
+  height: 100rpx;
+  border-radius: 16rpx;
+  border: 4rpx solid transparent;
+  margin-bottom: 12rpx;
+  transition: all 0.2s;
+}
+
+.color-picker-item:active .color-picker-swatch {
+  transform: scale(0.95);
+}
+
+.color-picker-name {
+  font-size: 24rpx;
+  color: #666;
+}

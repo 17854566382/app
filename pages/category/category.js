@@ -9,7 +9,8 @@ Page({
       { id: 2, name: '三轮车', icon: '' },
       { id: 3, name: '两轮车', icon: '' }
     ],
-    currentCategory: 'all',
+    currentCategory: 0,
+    allProducts: [],
     products: [],
     loading: false,
     error: null
@@ -19,30 +20,28 @@ Page({
     this.loadProducts()
   },
 
-  loadProducts(category) {
+  loadProducts() {
     const that = this
-    const cat = category !== undefined ? category : this.data.currentCategory
     this.setData({ loading: true, error: null })
 
-    const url = cat === 'all' || cat === 0
-      ? app.globalData.apiBaseUrl + '/api/products'
-      : app.globalData.apiBaseUrl + '/api/products/category/' + encodeURIComponent(cat)
-
     wx.request({
-      url: url,
+      url: app.globalData.apiBaseUrl + '/api/products',
       method: 'GET',
       timeout: 10000,
       success(res) {
         if (res.data && res.data.code === 0) {
+          const allProducts = res.data.data.map(p => ({
+            id: p.id,
+            name: p.name,
+            category: p.category,
+            desc: p.description,
+            price: p.priceText || p.price,
+            tag: p.tag,
+            image: p.images[0] || '/images/banner-h2zm.jpg'
+          }))
           that.setData({
-            products: res.data.data.map(p => ({
-              id: p.id,
-              name: p.name,
-              desc: p.description,
-              price: p.priceText || p.price,
-              tag: p.tag,
-              image: p.images[0] || '/images/banner-h2zm.png'
-            })),
+            allProducts,
+            products: allProducts,
             loading: false
           })
         } else {
@@ -60,10 +59,16 @@ Page({
   selectCategory(e) {
     const index = e.currentTarget.dataset.index
     const catName = this.data.categories[index].name
-    // '全部' -> 'all'
-    const cat = index === 0 ? 'all' : catName
-    this.setData({ currentCategory: index })
-    this.loadProducts(cat)
+
+    // 本地过滤
+    const filtered = index === 0
+      ? this.data.allProducts
+      : this.data.allProducts.filter(p => p.category === catName)
+
+    this.setData({
+      currentCategory: index,
+      products: filtered
+    })
   },
 
   goToDetail(e) {
@@ -72,36 +77,19 @@ Page({
   },
 
   callService() {
-    wx.makePhoneCall({ phoneNumber: '18605482818' })
+    wx.makePhoneCall({ phoneNumber: app.globalData.servicePhone })
   },
 
   onSearch(e) {
     const keyword = (e.detail && e.detail.value) ? e.detail.value.trim() : ''
     if (!keyword) {
-      this.loadProducts()
+      this.selectCategory({ currentTarget: { dataset: { index: this.data.currentCategory } } })
       return
     }
-    // Use /api/products and filter locally (no search endpoint yet)
-    wx.request({
-      url: app.globalData.apiBaseUrl + '/api/products',
-      success: (res) => {
-        if (res.data && res.data.code === 0) {
-          const filtered = res.data.data.filter(p =>
-            p.name.includes(keyword) || p.description.includes(keyword)
-          )
-          this.setData({
-            products: filtered.map(p => ({
-              id: p.id,
-              name: p.name,
-              desc: p.description,
-              price: p.priceText || p.price,
-              tag: p.tag,
-              image: p.images[0] || '/images/banner-h2zm.png'
-            }))
-          })
-        }
-      }
-    })
+    const filtered = this.data.allProducts.filter(p =>
+      p.name.includes(keyword) || (p.desc && p.desc.includes(keyword))
+    )
+    this.setData({ products: filtered })
   },
 
   onRefresh() {

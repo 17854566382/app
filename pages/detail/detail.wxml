@@ -2,11 +2,14 @@
 <view class="container">
   <!-- 图片展示区域 -->
   <view class="image-section" wx:if="{{product}}">
-    <swiper class="product-swiper" indicator-dots circular>
-      <swiper-item wx:for="{{product.images}}" wx:key="index">
+    <swiper class="product-swiper" indicator-dots circular current="{{swiperCurrent}}" bindchange="onSwiperChange">
+      <swiper-item wx:for="{{currentImages}}" wx:key="index">
         <image src="{{item}}" mode="aspectFill" class="product-image"/>
       </swiper-item>
     </swiper>
+    <view class="image-count" wx:if="{{currentImages.length > 1}}">
+      <text>{{swiperCurrent + 1}}/{{currentImages.length}}</text>
+    </view>
   </view>
 
   <!-- 加载中 -->

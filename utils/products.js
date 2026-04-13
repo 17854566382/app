@@ -1,3 +1,11 @@
+// 默认服务信息（门店、电话）
+const DEFAULT_SERVICE = {
+  address: '山东省泰安市东平县稻香街111号',
+  latitude: 35.92115304081332,
+  longitude: 116.46491899194064,
+  phone: '18605482818'
+}
+
 // 本地产品数据
 const products = [
   {
@@ -8,7 +16,7 @@ const products = [
     price: 3200,
     priceText: '3,200',
     tag: '热销',
-    images: ['/images/banner-h2zm.png'],
+    images: ['/images/banner-h2zm.jpg'],
     colors: [
       { name: '中国红', value: '#C0362C' },
       { name: '典雅黑', value: '#2C2C2C' },
@@ -21,13 +29,7 @@ const products = [
       { label: '电池容量', value: '60V20Ah' },
       { label: '载重', value: '150kg' }
     ],
-    features: ['智能防盗', 'LED大灯', 'USB充电', '前后碟刹'],
-    service: {
-      address: '山东省泰安市东平县稻香街111号',
-      latitude: 35.92115304081332,
-      longitude: 116.46491899194064,
-      phone: '18605482818'
-    }
+    features: ['智能防盗', 'LED大灯', 'USB充电', '前后碟刹']
   },
   {
     id: 2,
@@ -50,13 +52,7 @@ const products = [
       { label: '电池容量', value: '72V20Ah' },
       { label: '载重', value: '200kg' }
     ],
-    features: ['智能防盗', 'LED大灯', 'USB充电', '前后碟刹', '大屏仪表'],
-    service: {
-      address: '山东省泰安市东平县稻香街111号',
-      latitude: 35.92115304081332,
-      longitude: 116.46491899194064,
-      phone: '18605482818'
-    }
+    features: ['智能防盗', 'LED大灯', 'USB充电', '前后碟刹', '大屏仪表']
   },
   {
     id: 3,
@@ -66,7 +62,7 @@ const products = [
     price: 6000,
     priceText: '6,000',
     tag: '推荐',
-    images: ['/images/banner-png.png'],
+    images: ['/images/banner-png.jpg'],
     colors: [
       { name: '中国红', value: '#C0362C' },
       { name: '典雅黑', value: '#2C2C2C' },
@@ -79,13 +75,7 @@ const products = [
       { label: '电池容量', value: '72V32Ah' },
       { label: '载重', value: '250kg' }
     ],
-    features: ['智能防盗', 'LED大灯', 'USB充电', '前后碟刹', 'GPS定位', '手机APP'],
-    service: {
-      address: '山东省泰安市东平县稻香街111号',
-      latitude: 35.92115304081332,
-      longitude: 116.46491899194064,
-      phone: '18605482818'
-    }
+    features: ['智能防盗', 'LED大灯', 'USB充电', '前后碟刹', 'GPS定位', '手机APP']
   },
   {
     id: 4,
@@ -95,7 +85,7 @@ const products = [
     price: 2800,
     priceText: '2,800',
     tag: '实惠',
-    images: ['/images/banner-ctrt.png'],
+    images: ['/images/banner-ctrt.jpg'],
     colors: [
       { name: '中国红', value: '#C0362C' },
       { name: '典雅黑', value: '#2C2C2C' },
@@ -107,13 +97,7 @@ const products = [
       { label: '电池容量', value: '48V12Ah' },
       { label: '载重', value: '120kg' }
     ],
-    features: ['智能防盗', 'LED大灯', 'USB充电'],
-    service: {
-      address: '山东省泰安市东平县稻香街111号',
-      latitude: 35.92115304081332,
-      longitude: 116.46491899194064,
-      phone: '18605482818'
-    }
+    features: ['智能防盗', 'LED大灯', 'USB充电']
   },
   {
     id: 5,
@@ -135,13 +119,7 @@ const products = [
       { label: '电池容量', value: '60V45Ah' },
       { label: '载重', value: '500kg' }
     ],
-    features: ['加厚货箱', '液压减震', '前后碟刹', '倒车雷达'],
-    service: {
-      address: '山东省泰安市东平县稻香街111号',
-      latitude: 35.92115304081332,
-      longitude: 116.46491899194064,
-      phone: '18605482818'
-    }
+    features: ['加厚货箱', '液压减震', '前后碟刹', '倒车雷达']
   },
   {
     id: 6,
@@ -164,15 +142,9 @@ const products = [
       { label: '电池容量', value: '48V12Ah' },
       { label: '载重', value: '100kg' }
     ],
-    features: ['轻便车架', 'LED大灯', '前筐置物'],
-    service: {
-      address: '山东省泰安市东平县稻香街111号',
-      latitude: 35.92115304081332,
-      longitude: 116.46491899194064,
-      phone: '18605482818'
-    }
+    features: ['轻便车架', 'LED大灯', '前筐置物']
   }
-]
+].map(p => ({ ...p, service: DEFAULT_SERVICE }))
 
 // 获取所有产品
 function getProducts() {
@@ -196,5 +168,6 @@ module.exports = {
   products,
   getProducts,
   getProductsByCategory,
-  getProductById
+  getProductById,
+  DEFAULT_SERVICE
 }

@@ -4,10 +4,10 @@ const app = getApp()
 Page({
   data: {
     banners: [
-      { id: 1, image: '/images/banner-h2zm.png' },
-      { id: 2, image: '/images/banner-zdla.png' },
-      { id: 3, image: '/images/banner-png.png' },
-      { id: 4, image: '/images/banner-ctrt.png' }
+      { id: 1, image: '/images/banner-h2zm.jpg' },
+      { id: 2, image: '/images/banner-zdla.jpg' },
+      { id: 3, image: '/images/banner-png.jpg' },
+      { id: 4, image: '/images/banner-ctrt.jpg' }
     ],
     hotProducts: [],
     loading: false,
@@ -68,15 +68,16 @@ Page({
   },
 
   callService() {
-    wx.makePhoneCall({ phoneNumber: '18605482818' })
+    wx.makePhoneCall({ phoneNumber: app.globalData.servicePhone })
   },
 
   goToStore() {
+    const store = app.globalData.storeInfo
     wx.openLocation({
-      latitude: 35.921153,
-      longitude: 116.464919,
-      name: '海宝新能源',
-      address: '山东省泰安市东平县稻香街111号',
+      latitude: store.latitude,
+      longitude: store.longitude,
+      name: store.name,
+      address: store.address,
       scale: 18
     })
   },
@@ -85,7 +86,7 @@ Page({
     return {
       title: '海宝新能源篷车 - 优质电动车专卖',
       path: '/pages/index/index',
-      imageUrl: '/images/banner-h2zm.png'
+      imageUrl: '/images/banner-h2zm.jpg'
     }
   },
 

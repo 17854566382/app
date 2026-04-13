@@ -24,30 +24,53 @@
   font-size: 28rpx;
 }
 
+/* 分类筛选栏 */
 .filter-bar {
   background: #fff;
-  padding: 0 20rpx 20rpx;
-  border-bottom: 1rpx solid #eee;
+  padding: 20rpx 0;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.04);
 }
 
-.filter-scroll {
-  white-space: nowrap;
+.filter-tabs {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 0 20rpx;
 }
 
-.filter-item {
-  display: inline-block;
-  padding: 12rpx 32rpx;
-  margin-right: 20rpx;
-  background: #f5f5f5;
-  border-radius: 32rpx;
+.filter-tab {
+  position: relative;
+  padding: 16rpx 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.tab-text {
   font-size: 28rpx;
   color: #666;
-  transition: all 0.3s;
+  font-weight: 400;
+  transition: all 0.25s ease;
 }
 
-.filter-item.active {
+.filter-tab.active .tab-text {
+  color: #FF6B00;
+  font-weight: 600;
+  font-size: 32rpx;
+}
+
+.tab-indicator {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 40rpx;
+  height: 6rpx;
   background: linear-gradient(135deg, #FF6B00 0%, #FF8C3A 100%);
-  color: #fff;
+  border-radius: 3rpx;
 }
 
 .product-scroll {

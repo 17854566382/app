@@ -64,7 +64,7 @@
 }
 
 .product-item {
-  width: calc(50% - 10rpx);
+  width: calc(50% - 15rpx);
   margin-right: 20rpx;
   margin-bottom: 20rpx;
   background: #fff;

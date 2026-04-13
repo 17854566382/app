@@ -1,0 +1,174 @@
+<!--pages/admin/admin.wxml-->
+<view class="container">
+  <!-- 顶部标题 -->
+  <view class="header">
+    <text class="title">商品管理</text>
+    <text class="subtitle">添加或编辑商品信息</text>
+  </view>
+
+  <form bindsubmit="handleSubmit">
+    <!-- 基本信息 -->
+    <view class="section">
+      <view class="section-title">基本信息</view>
+      
+      <view class="form-item">
+        <text class="label">商品名称 *</text>
+        <input class="input" name="name" placeholder="请输入商品名称" value="{{formData.name}}" bindinput="onInput" data-field="name"/>
+      </view>
+      
+      <view class="form-item">
+        <text class="label">商品分类 *</text>
+        <picker mode="selector" range="{{categories}}" range-key="name" bindchange="onCategoryChange" value="{{categoryIndex}}">
+          <view class="picker">
+            <text class="{{formData.category ? 'picker-value' : 'picker-placeholder'}}">
+              {{formData.category || '请选择分类'}}
+            </text>
+            <text class="picker-arrow">▼</text>
+          </view>
+        </picker>
+      </view>
+      
+      <view class="form-item">
+        <text class="label">商品价格 *</text>
+        <view class="price-input">
+          <text class="price-unit">¥</text>
+          <input class="input" name="price" type="digit" placeholder="0.00" value="{{formData.price}}" bindinput="onInput" data-field="price"/>
+        </view>
+      </view>
+      
+      <view class="form-item">
+        <text class="label">商品描述</text>
+        <textarea class="textarea" name="description" placeholder="请输入商品描述（续航、配置等）" value="{{formData.description}}" bindinput="onInput" data-field="description" maxlength="200"/>
+      </view>
+      
+      <view class="form-item">
+        <text class="label">商品标签</text>
+        <view class="tags-wrap">
+          <view class="tag-item {{formData.tag === item ? 'active' : ''}}" 
+                wx:for="{{tagOptions}}" wx:key="*this" bindtap="selectTag" data-tag="{{item}}">
+            {{item}}
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 商品图片 -->
+    <view class="section">
+      <view class="section-title">
+        商品图片
+        <text class="add-link" bindtap="addColorGroup">+ 添加颜色组</text>
+      </view>
+      
+      <view class="color-groups">
+        <view class="color-group" wx:for="{{formData.colorGroups}}" wx:key="colorName">
+          <view class="color-group-header">
+            <view class="color-preview-small" style="background: {{item.colorValue}};" bindtap="pickGroupColor" data-index="{{index}}"></view>
+            <input class="color-name-input" placeholder="颜色名称" value="{{item.colorName}}" bindinput="onColorGroupInput" data-index="{{index}}" data-field="colorName"/>
+            <text class="remove-group" bindtap="removeColorGroup" data-index="{{index}}" wx:if="{{formData.colorGroups.length > 1}}">×</text>
+          </view>
+          
+          <view class="group-images">
+            <view class="image-item" wx:for="{{item.images}}" wx:key="*this" wx:for-item="img" wx:for-index="imgIdx">
+              <image src="{{img}}" mode="aspectFill"/>
+              <view class="remove-btn" bindtap="removeGroupImage" data-group="{{index}}" data-img="{{imgIdx}}">×</view>
+            </view>
+            <view class="image-add small" bindtap="chooseGroupImage" data-group="{{index}}" wx:if="{{item.images.length < 6}}">
+              <text class="add-icon">+</text>
+            </view>
+          </view>
+          
+          <view class="image-tags">
+            <text class="image-tag" wx:if="{{item.images.length > 0}}">已上传 {{item.images.length}} 张（建议：前、后、左、右、细节）</text>
+            <text class="image-tag placeholder" wx:else>点击 + 上传该颜色的商品图片</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 颜色配置 -->
+    <view class="section" wx:if="{{false}}">
+      <view class="section-title">
+        颜色配置
+        <text class="add-link" bindtap="addColor">+ 添加颜色</text>
+      </view>
+      <view class="colors-list">
+        <view class="color-item" wx:for="{{formData.colors}}" wx:key="index">
+          <input class="color-name" placeholder="颜色名称" value="{{item.name}}" bindinput="onColorInput" data-index="{{index}}" data-field="name"/>
+          <view class="color-picker-wrap">
+            <view class="color-preview" style="background: {{item.value}};" bindtap="pickColor" data-index="{{index}}"></view>
+            <input class="color-value" placeholder="#000000" value="{{item.value}}" bindinput="onColorInput" data-index="{{index}}" data-field="value"/>
+          </view>
+          <text class="remove-color" bindtap="removeColor" data-index="{{index}}">×</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 规格参数 -->
+    <view class="section">
+      <view class="section-title">
+        规格参数
+        <text class="add-link" bindtap="addSpec">+ 添加参数</text>
+      </view>
+      <view class="specs-list">
+        <view class="spec-item" wx:for="{{formData.specs}}" wx:key="index">
+          <input class="spec-label" placeholder="参数名称" value="{{item.label}}" bindinput="onSpecInput" data-index="{{index}}" data-field="label"/>
+          <input class="spec-value" placeholder="参数值" value="{{item.value}}" bindinput="onSpecInput" data-index="{{index}}" data-field="value"/>
+          <text class="remove-spec" bindtap="removeSpec" data-index="{{index}}">×</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 特色功能 -->
+    <view class="section">
+      <view class="section-title">
+        特色功能
+        <text class="add-link" bindtap="addFeature">+ 添加功能</text>
+      </view>
+      <view class="features-list">
+        <view class="feature-item" wx:for="{{formData.features}}" wx:key="index">
+          <input class="feature-input" placeholder="功能描述" value="{{item}}" bindinput="onFeatureInput" data-index="{{index}}"/>
+          <text class="remove-feature" bindtap="removeFeature" data-index="{{index}}">×</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 提交按钮 -->
+    <view class="btn-wrap">
+      <button class="btn-submit" form-type="submit" loading="{{submitting}}">
+        {{editingId ? '保存修改' : '添加商品'}}
+      </button>
+      <button class="btn-cancel" wx:if="{{editingId}}" bindtap="cancelEdit">取消编辑</button>
+    </view>
+  </form>
+
+  <!-- 已有商品列表 -->
+  <view class="section">
+    <view class="section-title">已有商品（{{products.length}}件）</view>
+    <view class="product-list">
+      <view class="product-row" wx:for="{{products}}" wx:key="id">
+        <image class="product-thumb" src="{{item.images[0] || '/images/banner-h2zm.jpg'}}" mode="aspectFill"/>
+        <view class="product-info">
+          <text class="product-name">{{item.name}}</text>
+          <text class="product-category">{{item.category}} · ¥{{item.price}}</text>
+        </view>
+        <view class="product-actions">
+          <text class="action-btn edit" bindtap="editProduct" data-id="{{item.id}}">编辑</text>
+          <text class="action-btn delete" bindtap="deleteProduct" data-id="{{item.id}}">删除</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 颜色选择弹窗 -->
+  <view class="color-picker-modal" wx:if="{{showColorPicker}}" bindtap="closeColorPicker">
+    <view class="color-picker-content" catchtap="">
+      <view class="color-picker-title">选择颜色</view>
+      <view class="color-picker-grid">
+        <view class="color-picker-item" wx:for="{{presetColors}}" wx:key="value" bindtap="selectPresetColor" data-index="{{index}}">
+          <view class="color-picker-swatch" style="background: {{item.value}}; {{item.value === '#F0EEE8' ? 'border-color: #ddd;' : ''}}"></view>
+          <text class="color-picker-name">{{item.name}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

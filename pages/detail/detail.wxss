@@ -17,6 +17,17 @@
   height: 100%;
 }
 
+.image-count {
+  position: absolute;
+  right: 30rpx;
+  bottom: 30rpx;
+  background: rgba(0, 0, 0, 0.5);
+  color: #fff;
+  padding: 8rpx 20rpx;
+  border-radius: 24rpx;
+  font-size: 24rpx;
+}
+
 .image-counter {
   position: absolute;
   right: 30rpx;

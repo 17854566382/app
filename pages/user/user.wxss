@@ -3,14 +3,16 @@
   background: linear-gradient(135deg, #FF6B00 0%, #FF8C3A 100%);
   padding: 60rpx 40rpx;
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
   align-items: center;
+  gap: 24rpx;
 }
 
 .user-info {
   display: flex;
   align-items: center;
   gap: 24rpx;
+  width: 100%;
 }
 
 .avatar {
@@ -23,6 +25,7 @@
 .user-meta {
   display: flex;
   flex-direction: column;
+  flex: 1;
 }
 
 .nickname {
@@ -40,14 +43,29 @@
 .btn-login {
   background: rgba(255, 255, 255, 0.2);
   color: #fff;
-  padding: 16rpx 40rpx;
+  padding: 20rpx 60rpx;
   border-radius: 40rpx;
   font-size: 28rpx;
   border: 2rpx solid rgba(255, 255, 255, 0.5);
-  margin: 0;
+  margin: 20rpx 0 0 0;
+  width: 100%;
 }
 
 .btn-login::after {
+  border: none;
+}
+
+.btn-phone {
+  background: rgba(255, 255, 255, 0.3);
+  color: #fff;
+  padding: 16rpx 40rpx;
+  border-radius: 40rpx;
+  font-size: 26rpx;
+  border: 2rpx solid rgba(255, 255, 255, 0.5);
+  margin: 10rpx 0 0 0;
+}
+
+.btn-phone::after {
   border: none;
 }
 
@@ -137,4 +155,26 @@
 .menu-arrow {
   font-size: 28rpx;
   color: #ccc;
+}
+
+.btn-logout {
+  background: #fff;
+  color: #ff4d4f;
+  padding: 24rpx 0;
+  border-radius: 20rpx;
+  font-size: 30rpx;
+  border: 2rpx solid #ff4d4f;
+  margin: 40rpx 30rpx;
+  width: calc(100% - 60rpx);
+}
+
+.btn-logout::after {
+  border: none;
+}
+
+.version-info {
+  text-align: center;
+  font-size: 24rpx;
+  color: #999;
+  padding: 30rpx 0 50rpx;
 }

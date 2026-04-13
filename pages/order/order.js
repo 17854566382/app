@@ -2,11 +2,29 @@
 Page({
   data: {
     orders: [],
-    loading: false
+    loading: false,
+    isLogin: false
   },
 
   onLoad() {
-    this.loadOrders()
+    this.checkLogin()
+  },
+
+  onShow() {
+    this.checkLogin()
+  },
+
+  checkLogin() {
+    const token = wx.getStorageSync('token')
+    const isLogin = !!token
+    this.setData({ isLogin })
+    if (isLogin) {
+      this.loadOrders()
+    }
+  },
+
+  goToLogin() {
+    wx.switchTab({ url: '/pages/user/user' })
   },
 
   loadOrders() {
@@ -17,7 +35,7 @@ Page({
       return
     }
     wx.request({
-      url: app.globalData.apiBaseUrl + '/orders',
+      url: app.globalData.apiBaseUrl + '/api/orders',
       header: {
         'Authorization': 'Bearer ' + token
       },
@@ -50,7 +68,7 @@ Page({
       success: (res) => {
         if (res.confirm) {
           wx.request({
-            url: getApp().globalData.apiBaseUrl + '/orders/' + id + '/cancel',
+            url: getApp().globalData.apiBaseUrl + '/api/orders/' + id + '/cancel',
             method: 'POST',
             header: {
               'Authorization': 'Bearer ' + wx.getStorageSync('token')
@@ -70,7 +88,7 @@ Page({
   payOrder(e) {
     const id = e.currentTarget.dataset.id
     wx.request({
-      url: getApp().globalData.apiBaseUrl + '/orders/' + id + '/pay',
+      url: getApp().globalData.apiBaseUrl + '/api/orders/' + id + '/pay',
       method: 'POST',
       header: {
         'Authorization': 'Bearer ' + wx.getStorageSync('token')
@@ -94,7 +112,7 @@ Page({
 
   contactService() {
     wx.makePhoneCall({
-      phoneNumber: '18605482818'
+      phoneNumber: getApp().globalData.servicePhone
     })
   },
 
@@ -106,7 +124,7 @@ Page({
       success: (res) => {
         if (res.confirm) {
           wx.request({
-            url: getApp().globalData.apiBaseUrl + '/orders/' + id + '/receive',
+            url: getApp().globalData.apiBaseUrl + '/api/orders/' + id + '/receive',
             method: 'POST',
             header: {
               'Authorization': 'Bearer ' + wx.getStorageSync('token')
