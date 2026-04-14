@@ -123,6 +123,31 @@
   color: #999;
 }
 
+/* 管理员区域 */
+.admin-section {
+  margin: 20rpx 30rpx;
+}
+
+.section-title {
+  font-size: 28rpx;
+  color: #999;
+  margin-bottom: 16rpx;
+  padding-left: 10rpx;
+}
+
+.admin-menu {
+  background: #FFF7F0;
+  border: 2rpx solid #FFE8D6;
+}
+
+.admin-menu .menu-item {
+  border-bottom-color: #FFE8D6;
+}
+
+.admin-menu .menu-item:last-child {
+  border-bottom: none;
+}
+
 .menu-list {
   background: #fff;
   margin: 0 30rpx;

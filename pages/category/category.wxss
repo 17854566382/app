@@ -74,21 +74,20 @@
 }
 
 .product-scroll {
-  height: calc(100vh - 200rpx);
-  /* 兼容旧版微信 */
-  height: -webkit-calc(100vh - 200rpx);
-  height: 100vh;
+  height: calc(100vh - 180rpx);
+  -webkit-overflow-scrolling: touch;
 }
 
 .product-grid {
   display: flex;
   flex-wrap: wrap;
   padding: 20rpx;
+  padding-bottom: 140rpx;
 }
 
 /* 用固定宽度替代 fr 单位，兼容旧版 */
 .product-card {
-  width: calc(50% - 10rpx);
+  width: calc(50% - 20rpx);
   margin-right: 20rpx;
   margin-bottom: 20rpx;
   background: #fff;

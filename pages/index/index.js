@@ -20,7 +20,7 @@ Page({
 
   onShow() {
     // 每次显示页面时刷新数据
-    // this.loadData()
+    this.loadData()
   },
 
   loadData() {
@@ -39,7 +39,7 @@ Page({
             desc: p.description,
             price: p.priceText || p.price,
             tag: p.tag,
-            image: p.images[0] || '/images/banner-h2zm.png'
+            image: app.globalData.apiBaseUrl + p.images[0] || '/images/banner-zdla.png'
           }))
           that.setData({ hotProducts: products, loading: false })
         } else {

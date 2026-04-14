@@ -1,0 +1,79 @@
+<view class="container">
+  <!-- 商品信息 -->
+  <view class="product-card" wx:if="{{productName}}">
+    <image class="product-image" src="{{productImage}}" mode="aspectFill"></image>
+    <view class="product-info">
+      <text class="product-name">{{productName}}</text>
+      <text class="product-tip">预约试驾体验</text>
+    </view>
+  </view>
+
+  <!-- 表单 -->
+  <view class="form-section">
+    <view class="section-title">预约信息</view>
+    
+    <view class="form-item">
+      <text class="label"><text class="required">*</text>姓名</text>
+      <input class="input" placeholder="请输入您的姓名" data-field="user_name" bindinput="onInput" value="{{formData.user_name}}" />
+    </view>
+    
+    <view class="form-item">
+      <text class="label"><text class="required">*</text>手机号</text>
+      <input class="input" type="number" placeholder="请输入手机号" maxlength="11" data-field="user_phone" bindinput="onInput" value="{{formData.user_phone}}" />
+    </view>
+    
+    <view class="form-item">
+      <text class="label"><text class="required">*</text>预约日期</text>
+      <picker mode="date" start="{{minDate}}" bindchange="onDateChange" value="{{formData.preferred_date}}">
+        <view class="picker">
+          <text class="{{formData.preferred_date ? '' : 'placeholder'}}">
+            {{formData.preferred_date || '请选择日期'}}
+          </text>
+          <text class="picker-arrow">›</text>
+        </view>
+      </picker>
+    </view>
+    
+    <view class="form-item">
+      <text class="label"><text class="required">*</text>预约时间</text>
+      <picker mode="selector" range="{{timeOptions}}" range-key="label" bindchange="onTimeChange" value="{{timeIndex}}">
+        <view class="picker">
+          <text class="{{formData.preferred_time ? '' : 'placeholder'}}">
+            {{formData.preferred_time || '请选择时间段'}}
+          </text>
+          <text class="picker-arrow">›</text>
+        </view>
+      </picker>
+    </view>
+    
+    <view class="form-item">
+      <text class="label">备注</text>
+      <textarea class="textarea" placeholder="其他需求或说明（选填）" data-field="remark" bindinput="onInput" value="{{formData.remark}}" maxlength="200" />
+    </view>
+  </view>
+
+  <!-- 门店信息 -->
+  <view class="store-section" wx:if="{{storeInfo}}">
+    <view class="section-title">门店信息</view>
+    <view class="store-card">
+      <view class="store-row" bindtap="goToStore">
+        <text class="store-icon">📍</text>
+        <text class="store-text">{{storeInfo.address}}</text>
+        <text class="store-arrow">›</text>
+      </view>
+      <view class="store-row" bindtap="callService">
+        <text class="store-icon">📞</text>
+        <text class="store-text">{{storeInfo.name}}</text>
+        <text class="store-phone">致电</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 提交按钮 -->
+  <view class="submit-section">
+    <button class="submit-btn {{submitting ? 'disabled' : ''}}" bindtap="handleSubmit" disabled="{{submitting}}">
+      {{submitting ? '提交中...' : '提交预约'}}
+    </button>
+    <text class="submit-tip">提交后客服将尽快与您联系确认</text>
+  </view>
+</view>

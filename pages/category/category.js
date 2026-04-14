@@ -20,6 +20,11 @@ Page({
     this.loadProducts()
   },
 
+  onShow() {
+    // 每次显示页面时刷新数据
+    this.loadProducts()
+  },
+
   loadProducts() {
     const that = this
     this.setData({ loading: true, error: null })

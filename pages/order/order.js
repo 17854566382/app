@@ -40,11 +40,14 @@ Page({
         'Authorization': 'Bearer ' + token
       },
       success: (res) => {
-        if (res.data.success) {
+        // 统一使用 code 判断
+        if (res.data && res.data.code === 0) {
           this.setData({
-            orders: res.data.data,
+            orders: res.data.data || [],
             loading: false
           })
+        } else {
+          this.setData({ loading: false })
         }
       },
       fail: () => {
@@ -74,9 +77,11 @@ Page({
               'Authorization': 'Bearer ' + wx.getStorageSync('token')
             },
             success: (result) => {
-              if (result.data.success) {
-                wx.showToast({ title: '取消成功' })
+              if (result.data && result.data.code === 0) {
+                wx.showToast({ title: '取消成功', icon: 'success' })
                 this.loadOrders()
+              } else {
+                wx.showToast({ title: result.data.message || '取消失败', icon: 'none' })
               }
             }
           })
@@ -94,17 +99,19 @@ Page({
         'Authorization': 'Bearer ' + wx.getStorageSync('token')
       },
       success: (res) => {
-        if (res.data.success) {
+        if (res.data && res.data.code === 0 && res.data.data && res.data.data.paymentParams) {
           wx.requestPayment({
             ...res.data.data.paymentParams,
             success: () => {
-              wx.showToast({ title: '支付成功' })
+              wx.showToast({ title: '支付成功', icon: 'success' })
               this.loadOrders()
             },
             fail: () => {
               wx.showToast({ title: '支付取消', icon: 'none' })
             }
           })
+        } else {
+          wx.showToast({ title: res.data.message || '支付失败', icon: 'none' })
         }
       }
     })
@@ -130,9 +137,11 @@ Page({
               'Authorization': 'Bearer ' + wx.getStorageSync('token')
             },
             success: (result) => {
-              if (result.data.success) {
-                wx.showToast({ title: '确认成功' })
+              if (result.data && result.data.code === 0) {
+                wx.showToast({ title: '确认成功', icon: 'success' })
                 this.loadOrders()
+              } else {
+                wx.showToast({ title: result.data.message || '确认失败', icon: 'none' })
               }
             }
           })

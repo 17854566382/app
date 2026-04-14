@@ -102,6 +102,18 @@ Page({
     }
   },
 
+  // 预约试驾
+  goToTestDrive() {
+    const product = this.data.product
+    if (!product) return
+    
+    const imageUrl = this.data.currentImages[0] || ''
+    
+    wx.navigateTo({
+      url: `/pages/testdrive/testdrive?id=${product.id}&name=${encodeURIComponent(product.name)}&image=${encodeURIComponent(imageUrl)}`
+    })
+  },
+
   onShareAppMessage() {
     const product = this.data.product
     return {

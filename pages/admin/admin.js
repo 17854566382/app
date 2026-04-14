@@ -3,6 +3,8 @@ const app = getApp()
 
 Page({
   data: {
+    showCategoryPicker: false,
+    categoryNames: ['篷车', '三轮车', '两轮车'],
     categories: [
       { id: 1, name: '篷车' },
       { id: 2, name: '三轮车' },
@@ -84,6 +86,22 @@ Page({
     this.setData({
       categoryIndex: index,
       'formData.category': this.data.categories[index].name
+    })
+  },
+
+  toggleCategoryPicker() {
+    this.setData({ showCategoryPicker: true })
+  },
+
+  closeCategoryPicker() {
+    this.setData({ showCategoryPicker: false })
+  },
+
+  onSelectCategory(e) {
+    const name = e.currentTarget.dataset.name
+    this.setData({
+      'formData.category': name,
+      showCategoryPicker: false
     })
   },
 
@@ -305,8 +323,9 @@ Page({
         value: g.colorValue
       }))
       
-      // 第一张图作为封面
-      const coverImage = uploadedGroups[0].images[0]
+      // 找到第一个有图片的颜色组作为封面
+      const firstGroupWithImage = uploadedGroups.find(g => g.images && g.images.length > 0)
+      const coverImage = firstGroupWithImage ? firstGroupWithImage.images[0] : ''
       
       const data = {
         name: formData.name,

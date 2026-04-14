@@ -32,7 +32,8 @@ Page({
     const userInfo = app.globalData.userInfo || wx.getStorageSync('userInfo')
     this.setData({
       userInfo: userInfo || null,
-      isLogin: !!userInfo
+      isLogin: !!userInfo,
+      isAdmin: this.checkAdmin()
     })
   },
 
@@ -45,7 +46,8 @@ Page({
         this.setData({ 
           userInfo, 
           isLogin: true, 
-          loading: false 
+          loading: false,
+          isAdmin: this.checkAdmin()
         })
         wx.showToast({ title: '登录成功', icon: 'success' })
       })
@@ -71,7 +73,7 @@ Page({
           return app.getPhoneNumber(e.detail.code)
         })
         .then((userInfo) => {
-          this.setData({ userInfo })
+          this.setData({ userInfo, isAdmin: this.checkAdmin() })
           wx.showToast({ title: '绑定成功', icon: 'success' })
         })
         .catch((err) => {
@@ -81,7 +83,7 @@ Page({
       // 已登录，直接绑定手机号
       app.getPhoneNumber(e.detail.code)
         .then((userInfo) => {
-          this.setData({ userInfo })
+          this.setData({ userInfo, isAdmin: this.checkAdmin() })
           wx.showToast({ title: '绑定成功', icon: 'success' })
         })
         .catch((err) => {
@@ -100,7 +102,8 @@ Page({
           app.logout()
           this.setData({ 
             userInfo: null, 
-            isLogin: false 
+            isLogin: false,
+            isAdmin: false
           })
           wx.showToast({ title: '已退出登录', icon: 'success' })
         }
@@ -148,6 +151,10 @@ Page({
 
   goToAdmin() {
     wx.navigateTo({ url: '/pages/admin/admin' })
+  },
+
+  goToTestDriveAdmin() {
+    wx.navigateTo({ url: '/pages/admin-testdrive/admin-testdrive' })
   },
 
   onShareAppMessage() {

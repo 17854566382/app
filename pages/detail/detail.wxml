@@ -75,15 +75,15 @@
     </view>
   </view>
 
+  <!-- 底部留白 -->
+  <view class="bottom-space"></view>
+
   <!-- 底部操作栏 -->
   <view class="bottom-bar" wx:if="{{product}}">
-    <view class="bar-left">
-      <view class="total-price">
-        <text class="price-label">参考价：</text>
-        <text class="price-num">¥{{product.priceText}}</text>
-      </view>
-      <text class="selected-info" wx:if="{{selectedColor}}">{{selectedColor.name}}</text>
-    </view>
+    <button class="btn-secondary" bindtap="goToTestDrive">
+      <text class="btn-icon">🚗</text>
+      <text>预约试驾</text>
+    </button>
     <button class="btn-submit" bindtap="callService">联系购买</button>
   </view>
 </view>

@@ -1,0 +1,210 @@
+<view class="container">
+  <!-- 顶部统计 -->
+  <view class="stats-bar">
+    <view class="stat-item">
+      <text class="stat-num">{{stats.total}}</text>
+      <text class="stat-label">总预约</text>
+    </view>
+    <view class="stat-item">
+      <text class="stat-num">{{stats.pending}}</text>
+      <text class="stat-label">待确认</text>
+    </view>
+    <view class="stat-item">
+      <text class="stat-num">{{stats.confirmed}}</text>
+      <text class="stat-label">已确认</text>
+    </view>
+    <view class="stat-item">
+      <text class="stat-num">{{stats.completed}}</text>
+      <text class="stat-label">已完成</text>
+    </view>
+  </view>
+
+  <!-- 状态筛选 -->
+  <scroll-view class="filter-bar" scroll-x>
+    <view class="filter-item {{statusFilter === item.value ? 'active' : ''}}" 
+          wx:for="{{statusOptions}}" wx:key="value" 
+          bindtap="onStatusChange" data-status="{{item.value}}">
+      {{item.label}}
+    </view>
+  </scroll-view>
+
+  <!-- 预约列表 -->
+  <view class="list-section">
+    <view class="list-header">
+      <text class="list-title">预约列表</text>
+      <text class="export-btn" bindtap="exportData">导出数据</text>
+    </view>
+
+    <view class="loading-wrap" wx:if="{{loading}}">
+      <text>加载中...</text>
+    </view>
+
+    <view class="empty-state" wx:if="{{!loading && filteredAppointments.length === 0}}">
+      <text class="empty-icon">📋</text>
+      <text class="empty-text">暂无预约记录</text>
+    </view>
+
+    <view class="appointment-list">
+      <view class="appointment-card" 
+            wx:for="{{filteredAppointments}}" wx:key="id"
+            bindtap="viewDetail" data-id="{{item.id}}">
+        <view class="card-header">
+          <view class="user-info">
+            <text class="user-name">{{item.user_name}}</text>
+            <text class="user-phone">{{item.user_phone}}</text>
+          </view>
+          <view class="status-tag status-{{item.status}}">
+            {{item.status === 'pending' ? '待确认' : item.status === 'confirmed' ? '已确认' : item.status === 'completed' ? '已完成' : '已取消'}}
+          </view>
+        </view>
+        
+        <view class="card-body">
+          <view class="info-row" wx:if="{{item.product_name}}">
+            <text class="info-icon">🚗</text>
+            <text class="info-text">{{item.product_name}}</text>
+          </view>
+          <view class="info-row">
+            <text class="info-icon">📅</text>
+            <text class="info-text">{{item.preferred_date}} {{item.preferred_time}}</text>
+          </view>
+        </view>
+
+        <view class="card-footer">
+          <text class="create-time">提交于 {{item.created_at}}</text>
+          <text class="view-detail">查看详情 ›</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 详情弹窗 -->
+  <view class="detail-modal" wx:if="{{showDetail}}" catchtouchmove="preventTouchMove">
+    <view class="detail-mask" bindtap="closeDetail"></view>
+    <view class="detail-content">
+      <!-- 可滚动区域 -->
+      <scroll-view class="detail-scroll" scroll-y>
+        <view class="detail-header">
+          <text class="detail-title">预约详情</text>
+          <view class="close-btn" bindtap="closeDetail">
+            <text class="close-icon">×</text>
+          </view>
+        </view>
+
+        <view class="detail-body" wx:if="{{selectedAppointment}}">
+          <!-- 用户信息 -->
+          <view class="detail-group">
+            <text class="group-title">用户信息</text>
+            <view class="detail-row">
+              <text class="detail-label">姓名</text>
+              <text class="detail-value">{{selectedAppointment.user_name}}</text>
+            </view>
+            <view class="detail-row">
+              <text class="detail-label">手机号</text>
+              <text class="detail-value phone-link" bindtap="callService">{{selectedAppointment.user_phone}}</text>
+            </view>
+          </view>
+
+          <!-- 预约信息 -->
+          <view class="detail-group">
+            <text class="group-title">预约信息</text>
+            <view class="detail-row" wx:if="{{selectedAppointment.product_name}}">
+              <text class="detail-label">试驾车型</text>
+              <text class="detail-value">{{selectedAppointment.product_name}}</text>
+            </view>
+            <view class="detail-row">
+              <text class="detail-label">预约日期</text>
+              <text class="detail-value">{{selectedAppointment.preferred_date}}</text>
+            </view>
+            <view class="detail-row">
+              <text class="detail-label">预约时间</text>
+              <text class="detail-value">{{selectedAppointment.preferred_time}}</text>
+            </view>
+            <view class="detail-row">
+              <text class="detail-label">当前状态</text>
+              <view class="status-badge status-{{selectedAppointment.status}}">
+                {{selectedAppointment.status === 'pending' ? '待确认' : selectedAppointment.status === 'confirmed' ? '已确认' : selectedAppointment.status === 'completed' ? '已完成' : '已取消'}}
+              </view>
+            </view>
+            <view class="detail-row" wx:if="{{selectedAppointment.remark}}">
+              <text class="detail-label">备注</text>
+              <text class="detail-value">{{selectedAppointment.remark}}</text>
+            </view>
+          </view>
+
+          <!-- 时间记录 -->
+          <view class="detail-group">
+            <text class="group-title">时间记录</text>
+            <view class="detail-row">
+              <text class="detail-label">提交时间</text>
+              <text class="detail-value">{{selectedAppointment.created_at}}</text>
+            </view>
+            <view class="detail-row" wx:if="{{selectedAppointment.updated_at && selectedAppointment.updated_at !== selectedAppointment.created_at}}">
+              <text class="detail-label">更新时间</text>
+              <text class="detail-value">{{selectedAppointment.updated_at}}</text>
+            </view>
+          </view>
+        </view>
+      </scroll-view>
+
+      <!-- 操作按钮区 - 固定在底部 -->
+      <view class="detail-footer">
+        <view class="action-row">
+          <button class="action-btn primary" bindtap="callService">
+            <text class="btn-icon">📞</text>
+            <text>拨打电话</text>
+          </button>
+          <button class="action-btn secondary" bindtap="openSmsModal">
+            <text class="btn-icon">💬</text>
+            <text>发送短信</text>
+          </button>
+        </view>
+
+        <view class="status-row" wx:if="{{selectedAppointment && selectedAppointment.status !== 'cancelled' && selectedAppointment.status !== 'completed'}}">
+          <button class="status-btn confirm" bindtap="updateStatus" data-status="confirmed" wx:if="{{selectedAppointment.status === 'pending'}}">
+            ✓ 确认预约
+          </button>
+          <button class="status-btn complete" bindtap="updateStatus" data-status="completed" wx:if="{{selectedAppointment.status === 'confirmed'}}">
+            ✓ 标记完成
+          </button>
+          <button class="status-btn cancel" bindtap="updateStatus" data-status="cancelled">
+            ✕ 取消预约
+          </button>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 短信弹窗 -->
+  <view class="sms-modal" wx:if="{{showSmsModal}}" catchtouchmove="preventTouchMove">
+    <view class="sms-mask" bindtap="closeSmsModal"></view>
+    <view class="sms-content">
+      <view class="sms-header">
+        <text class="sms-title">发送短信通知</text>
+        <view class="close-btn" bindtap="closeSmsModal">
+          <text class="close-icon">×</text>
+        </view>
+      </view>
+      
+      <view class="sms-body">
+        <view class="sms-to">
+          <text class="sms-label">接收号码：</text>
+          <text class="sms-phone">{{selectedAppointment.user_phone}}</text>
+        </view>
+        <textarea class="sms-input" 
+                  placeholder="请输入短信内容" 
+                  value="{{smsContent}}" 
+                  bindinput="onSmsInput"
+                  maxlength="200"
+                  auto-height />
+        <view class="sms-count-row">
+          <text class="sms-count">{{smsContent.length}}/200</text>
+        </view>
+      </view>
+
+      <view class="sms-actions">
+        <button class="sms-btn cancel" bindtap="closeSmsModal">取消</button>
+        <button class="sms-btn send" bindtap="sendSms" loading="{{sendingSms}}">发送</button>
+      </view>
+    </view>
+  </view>
+</view>
