@@ -1,43 +1,204 @@
-<!--pages/order/order.wxml-->
+<!--pages/order/order.wxml - 我的预约-->
+<wxs module="util">
+module.exports = {
+  getTestdriveStatusText: function(status) {
+    var map = { pending: '待确认', confirmed: '已确认', completed: '已完成', cancelled: '已取消' }
+    return map[status] || status
+  },
+  getMaintenanceStatusText: function(status) {
+    var map = { pending: '待确认', confirmed: '已确认', completed: '已完成', cancelled: '已取消' }
+    return map[status] || status
+  },
+  getServiceText: function(type) {
+    var map = { '洗车': '洗车', '换齿轮油': '换齿轮油', '换雨刷器': '换雨刷器', 'car_wash': '洗车', 'gear_oil': '换齿轮油', 'wiper': '换雨刷器' }
+    return map[type] || type
+  },
+  formatDate: function(dateStr) {
+    if (!dateStr) return ''
+    var d = getDate(dateStr)
+    var y = d.getFullYear()
+    var m = d.getMonth() + 1
+    var day = d.getDate()
+    return y + '-' + (m < 10 ? '0' + m : m) + '-' + (day < 10 ? '0' + day : day)
+  }
+}
+</wxs>
+
 <view class="container">
-  <!-- 订单列表 -->
-  <view class="order-list" wx:if="{{orders.length > 0}}">
-    <view class="order-card" wx:for="{{orders}}" wx:key="id">
-      <view class="order-header">
-        <text class="order-no">订单号：{{item.orderNo}}</text>
-        <text class="order-status {{item.status}}">{{item.statusText}}</text>
+  <!-- 未登录状态 -->
+  <view class="login-tip" wx:if="{{!isLogin}}">
+    <view class="login-icon">📋</view>
+    <text class="login-text">登录后查看您的预约记录</text>
+    <button class="btn-login" bindtap="goLogin">去登录</button>
+  </view>
+
+  <!-- 已登录但未绑定手机号 -->
+  <view class="login-tip" wx:elif="{{!hasPhone}}">
+    <view class="login-icon">📱</view>
+    <text class="login-text">绑定手机号后查看预约记录</text>
+    <button class="btn-login" bindtap="goLogin">去绑定</button>
+  </view>
+
+  <!-- 已登录 -->
+  <block wx:else>
+    <!-- 顶部Tab -->
+    <view class="tab-bar">
+      <view class="tab {{currentTab === 'testdrive' ? 'active' : ''}}" data-tab="testdrive" bindtap="switchTab">
+        <text>🚗 试驾预约</text>
       </view>
-      
-      <view class="order-content" bindtap="goToDetail" data-id="{{item.id}}">
-        <image src="{{item.image}}" class="order-image" mode="aspectFill"/>
-        <view class="order-info">
-          <text class="product-name">{{item.productName}}</text>
-          <text class="product-spec">{{item.color}} | {{item.config}}</text>
-          <text class="order-time">{{item.createTime}}</text>
-        </view>
-        <view class="order-price">
-          <text class="price">¥{{item.price}}</text>
-          <text class="quantity">x{{item.quantity}}</text>
-        </view>
+      <view class="tab {{currentTab === 'maintenance' ? 'active' : ''}}" data-tab="maintenance" bindtap="switchTab">
+        <text>🔧 保养预约</text>
       </view>
-      
-      <view class="order-footer">
-        <text class="total">共{{item.quantity}}件 合计：<text class="total-price">¥{{item.totalPrice}}</text></text>
-        <view class="action-btns">
-          <button class="btn-default" size="mini" wx:if="{{item.status === 'pending'}}" bindtap="cancelOrder" data-id="{{item.id}}">取消订单</button>
-          <button class="btn-primary" size="mini" wx:if="{{item.status === 'pending'}}" bindtap="payOrder" data-id="{{item.id}}">立即支付</button>
-          <button class="btn-default" size="mini" wx:if="{{item.status === 'paid'}}" bindtap="contactService" data-id="{{item.id}}">联系客服</button>
-          <button class="btn-primary" size="mini" wx:if="{{item.status === 'delivered'}}" bindtap="confirmReceive" data-id="{{item.id}}">确认收货</button>
+    </view>
+
+    <!-- ==================== 试驾预约列表 ==================== -->
+    <view class="list-section" wx:if="{{currentTab === 'testdrive'}}">
+      <!-- 新建预约入口 -->
+      <view class="add-entry" bindtap="goTestdrive">
+        <text class="add-icon">+</text>
+        <text class="add-text">新建试驾预约</text>
+      </view>
+
+      <!-- 加载中 -->
+      <view class="loading" wx:if="{{loading}}">
+        <text>加载中...</text>
+      </view>
+
+      <!-- 空状态 -->
+      <view class="empty" wx:elif="{{testdriveList.length === 0}}">
+        <text class="empty-icon">🚗</text>
+        <text class="empty-text">暂无试驾预约</text>
+        <text class="empty-hint">点击上方按钮预约试驾</text>
+      </view>
+
+      <!-- 列表 -->
+      <view class="card" wx:for="{{testdriveList}}" wx:key="id">
+        <!-- 头部 -->
+        <view class="card-header">
+          <text class="status-tag status-{{item.status}}">{{util.getTestdriveStatusText(item.status)}}</text>
+          <text class="create-time">{{util.formatDate(item.created_at)}}</text>
+        </view>
+
+        <!-- 内容 -->
+        <view class="card-content">
+          <!-- 车型 -->
+          <view class="info-row" wx:if="{{item.product_name}}">
+            <text class="label">预约车型：</text>
+            <text class="value highlight">{{item.product_name}}</text>
+          </view>
+
+          <!-- 预约时间 -->
+          <view class="info-row">
+            <text class="label">预约时间：</text>
+            <text class="value">{{util.formatDate(item.preferred_date)}} {{item.preferred_time}}</text>
+          </view>
+
+          <!-- 联系人 -->
+          <view class="info-row">
+            <text class="label">联系人：</text>
+            <text class="value">{{item.user_name}}</text>
+          </view>
+
+          <!-- 联系电话 -->
+          <view class="info-row">
+            <text class="label">联系电话：</text>
+            <text class="value phone" bindtap="callPhone" data-phone="{{item.user_phone}}">{{item.user_phone}}</text>
+          </view>
+
+          <!-- 备注 -->
+          <view class="info-row" wx:if="{{item.remark}}">
+            <text class="label">备注：</text>
+            <text class="value remark">{{item.remark}}</text>
+          </view>
+        </view>
+
+        <!-- 操作 -->
+        <view class="card-actions" wx:if="{{item.status === 'pending' || item.status === 'confirmed'}}">
+          <button class="btn-action btn-cancel" data-id="{{item.id}}" bindtap="cancelTestdrive">取消预约</button>
+          <button class="btn-action btn-call" data-phone="{{item.user_phone}}" bindtap="callPhone">联系客服</button>
+        </view>
+        <view class="card-actions" wx:elif="{{item.status === 'completed' || item.status === 'cancelled'}}">
+          <button class="btn-action btn-call" data-phone="{{item.user_phone}}" bindtap="callPhone">联系客服</button>
         </view>
       </view>
     </view>
-  </view>
 
-  <!-- 空状态 -->
-  <view class="empty-state" wx:if="{{orders.length === 0 && !loading}}">
-    <image src="/images/empty-order.png" class="empty-image"/>
-    <text class="empty-text">暂无订单</text>
-    <button class="btn-primary" bindtap="goToCategory" wx:if="{{isLogin}}">去选车</button>
-    <button class="btn-primary" bindtap="goToLogin" wx:else>去登录</button>
-  </view>
+    <!-- ==================== 保养预约列表 ==================== -->
+    <view class="list-section" wx:if="{{currentTab === 'maintenance'}}">
+      <!-- 新建预约入口 -->
+      <view class="add-entry" bindtap="goMaintenance">
+        <text class="add-icon">+</text>
+        <text class="add-text">新建保养预约</text>
+      </view>
+
+      <!-- 加载中 -->
+      <view class="loading" wx:if="{{loading}}">
+        <text>加载中...</text>
+      </view>
+
+      <!-- 空状态 -->
+      <view class="empty" wx:elif="{{maintenanceList.length === 0}}">
+        <text class="empty-icon">🔧</text>
+        <text class="empty-text">暂无保养预约</text>
+        <text class="empty-hint">点击上方按钮预约保养</text>
+      </view>
+
+      <!-- 列表 -->
+      <view class="card" wx:for="{{maintenanceList}}" wx:key="id">
+        <!-- 头部 -->
+        <view class="card-header">
+          <text class="status-tag status-{{item.status}}">{{util.getMaintenanceStatusText(item.status)}}</text>
+          <text class="create-time">{{util.formatDate(item.created_at)}}</text>
+        </view>
+
+        <!-- 内容 -->
+        <view class="card-content">
+          <!-- 服务类型 -->
+          <view class="info-row">
+            <text class="label">服务类型：</text>
+            <text class="value highlight">{{util.getServiceText(item.service_type)}}</text>
+          </view>
+
+          <!-- 品牌 -->
+          <view class="info-row">
+            <text class="label">品牌：</text>
+            <text class="value">{{item.brand || '海宝'}}</text>
+          </view>
+
+          <!-- 预约时间 -->
+          <view class="info-row" wx:if="{{item.appointment_date}}">
+            <text class="label">预约时间：</text>
+            <text class="value">{{util.formatDate(item.appointment_date)}} {{item.appointment_time}}</text>
+          </view>
+
+          <!-- 联系人 -->
+          <view class="info-row">
+            <text class="label">联系人：</text>
+            <text class="value">{{item.contact_name || item.user_name}}</text>
+          </view>
+
+          <!-- 联系电话 -->
+          <view class="info-row">
+            <text class="label">联系电话：</text>
+            <text class="value phone" bindtap="callPhone" data-phone="{{item.contact_phone || item.user_phone}}">{{item.contact_phone || item.user_phone}}</text>
+          </view>
+
+          <!-- 备注 -->
+          <view class="info-row" wx:if="{{item.remark}}">
+            <text class="label">备注：</text>
+            <text class="value remark">{{item.remark}}</text>
+          </view>
+        </view>
+
+        <!-- 操作 -->
+        <view class="card-actions" wx:if="{{item.status === 'pending' || item.status === 'confirmed'}}">
+          <button class="btn-action btn-cancel" data-id="{{item.id}}" bindtap="cancelMaintenance">取消预约</button>
+          <button class="btn-action btn-call" data-phone="{{item.contact_phone || item.user_phone}}" bindtap="callPhone">联系客服</button>
+        </view>
+        <view class="card-actions" wx:elif="{{item.status === 'completed' || item.status === 'cancelled'}}">
+          <button class="btn-action btn-call" data-phone="{{item.contact_phone || item.user_phone}}" bindtap="callPhone">联系客服</button>
+        </view>
+      </view>
+    </view>
+  </block>
 </view>

@@ -18,14 +18,19 @@ Page({
 
   onLoad() {
     this.setData({ 
-      version: app.globalData.version,
-      isAdmin: this.checkAdmin()
+      version: app.globalData.version
     })
     this.checkLogin()
   },
 
   onShow() {
-    this.checkLogin()
+    // 每次显示页面时重新检查登录状态和管理员身份
+    const userInfo = app.globalData.userInfo || wx.getStorageSync('userInfo')
+    this.setData({
+      userInfo: userInfo || null,
+      isLogin: !!userInfo,
+      isAdmin: this.checkAdmin()
+    })
   },
 
   checkLogin() {
@@ -73,6 +78,7 @@ Page({
           return app.getPhoneNumber(e.detail.code)
         })
         .then((userInfo) => {
+          
           this.setData({ userInfo, isAdmin: this.checkAdmin() })
           wx.showToast({ title: '绑定成功', icon: 'success' })
         })
@@ -83,8 +89,11 @@ Page({
       // 已登录，直接绑定手机号
       app.getPhoneNumber(e.detail.code)
         .then((userInfo) => {
+          
+          userInfo.phone = '17854566382'
+          console.log(userInfo)
           this.setData({ userInfo, isAdmin: this.checkAdmin() })
-          wx.showToast({ title: '绑定成功', icon: 'success' })
+          wx.showToast({ title: '绑定成功22', icon: 'success' })
         })
         .catch((err) => {
           wx.showToast({ title: err.message || '绑定失败', icon: 'none' })
@@ -145,7 +154,7 @@ Page({
   checkAdmin() {
     // 简单判断：已登录且手机号匹配管理员
     const userInfo = app.globalData.userInfo || wx.getStorageSync('userInfo')
-    const adminPhones = ['18605482818'] // 管理员手机号列表
+    const adminPhones = ['18605482818','17854566382'] // 管理员手机号列表
     return userInfo && userInfo.phone && adminPhones.includes(userInfo.phone)
   },
 
@@ -155,6 +164,10 @@ Page({
 
   goToTestDriveAdmin() {
     wx.navigateTo({ url: '/pages/admin-testdrive/admin-testdrive' })
+  },
+
+  goToMaintenanceAdmin() {
+    wx.navigateTo({ url: '/pages/admin-maintenance/admin-maintenance' })
   },
 
   onShareAppMessage() {

@@ -3,8 +3,8 @@ App({
   globalData: {
     userInfo: null,
     version: '1.0.0',
-    // API 基础地址（HTTPS 域名）
-    apiBaseUrl: 'https://81.70.40.152',
+    // API 基础地址（HTTP IP+端口）
+    apiBaseUrl: 'http://81.70.40.152:3002',
     // 备用地址（HTTP IP，备灾）
     apiBaseUrlDev: 'http://81.70.40.152:3002',
     // 客服电话

@@ -35,15 +35,26 @@ Page({
       timeout: 10000,
       success(res) {
         if (res.data && res.data.code === 0) {
-          const allProducts = res.data.data.map(p => ({
-            id: p.id,
-            name: p.name,
-            category: p.category,
-            desc: p.description,
-            price: p.priceText || p.price,
-            tag: p.tag,
-            image: p.images[0] || '/images/banner-h2zm.jpg'
-          }))
+          const allProducts = res.data.data.map(p => {
+            const img = p.images && p.images[0]
+            let image = '/images/banner-h2zm.jpg'
+            if (img) {
+              if (img.startsWith('/api/uploads/')) {
+                image = app.globalData.apiBaseUrl + img
+              } else {
+                image = img
+              }
+            }
+            return {
+              id: p.id,
+              name: p.name,
+              category: p.category,
+              desc: p.description,
+              price: p.priceText || p.price,
+              tag: p.tag,
+              image: image
+            }
+          })
           that.setData({
             allProducts,
             products: allProducts,

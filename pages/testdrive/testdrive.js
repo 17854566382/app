@@ -64,11 +64,20 @@ Page({
       success: (res) => {
         if (res.data && res.data.code === 0) {
           const product = res.data.data
+          // 处理图片 URL
+          let productImage = ''
+          const img = product.images && product.images[0]
+          if (img) {
+            if (img.startsWith('/api/uploads/')) {
+              productImage = app.globalData.apiBaseUrl + img
+            } else {
+              productImage = img
+            }
+          }
           this.setData({
             product,
             productName: product.name,
-            productImage: product.images && product.images[0] ? 
-              (product.images[0].startsWith('http') ? product.images[0] : app.globalData.apiBaseUrl + product.images[0]) : ''
+            productImage: productImage
           })
         }
       }

@@ -144,7 +144,7 @@
     <view class="section-title">已有商品（{{products.length}}件）</view>
     <view class="product-list">
       <view class="product-row" wx:for="{{products}}" wx:key="id">
-        <image class="product-thumb" src="{{item.images[0] || '/images/banner-h2zm.jpg'}}" mode="aspectFill"/>
+        <image class="product-thumb" src="{{item.displayImage}}" mode="aspectFill"/>
         <view class="product-info">
           <text class="product-name">{{item.name}}</text>
           <text class="product-category">{{item.category}} · ¥{{item.price}}</text>

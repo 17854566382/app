@@ -1,157 +1,257 @@
-/* pages/order/order.wxss */
-.order-list {
-  padding: 20rpx;
+/* pages/order/order.wxss — 我的预约 */
+
+.container {
+  min-height: 100vh;
+  background: #f5f5f5;
 }
 
-.order-card {
-  background: #fff;
-  border-radius: 16rpx;
-  margin-bottom: 20rpx;
-  overflow: hidden;
-}
-
-.order-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 24rpx;
-  border-bottom: 1rpx solid #f5f5f5;
-}
-
-.order-no {
-  font-size: 26rpx;
-  color: #666;
-}
-
-.order-status {
-  font-size: 26rpx;
-  font-weight: 500;
-}
-
-.order-status.pending { color: #FF6B00; }
-.order-status.paid { color: #409EFF; }
-.order-status.delivered { color: #67C23A; }
-.order-status.completed { color: #999; }
-.order-status.cancelled { color: #999; }
-
-.order-content {
-  display: flex;
-  padding: 24rpx;
-  gap: 20rpx;
-}
-
-.order-image {
-  width: 160rpx;
-  height: 160rpx;
-  border-radius: 12rpx;
-}
-
-.order-info {
-  flex: 1;
-}
-
-.product-name {
-  font-size: 30rpx;
-  font-weight: 500;
-  color: #333;
-  display: block;
-  margin-bottom: 12rpx;
-}
-
-.product-spec {
-  font-size: 26rpx;
-  color: #666;
-  display: block;
-  margin-bottom: 12rpx;
-}
-
-.order-time {
-  font-size: 24rpx;
-  color: #999;
-}
-
-.order-price {
-  text-align: right;
-}
-
-.price {
-  font-size: 30rpx;
-  font-weight: 600;
-  color: #333;
-  display: block;
-}
-
-.quantity {
-  font-size: 26rpx;
-  color: #999;
-}
-
-.order-footer {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 24rpx;
-  background: #fafafa;
-}
-
-.total {
-  font-size: 26rpx;
-  color: #666;
-}
-
-.total-price {
-  font-size: 32rpx;
-  font-weight: 600;
-  color: #FF6B00;
-}
-
-.action-btns {
-  display: flex;
-  gap: 16rpx;
-}
-
-.btn-default {
-  background: #fff;
-  color: #666;
-  border: 1rpx solid #ddd;
-  border-radius: 30rpx;
-  padding: 8rpx 24rpx;
-  font-size: 26rpx;
-  margin: 0;
-}
-
-.btn-default::after {
-  border: none;
-}
-
-.btn-primary {
-  background: linear-gradient(135deg, #FF6B00 0%, #FF8C3A 100%);
-  color: #fff;
-  border-radius: 30rpx;
-  padding: 8rpx 24rpx;
-  font-size: 26rpx;
-  margin: 0;
-}
-
-.btn-primary::after {
-  border: none;
-}
-
-.empty-state {
+/* ===== 未登录 ===== */
+.login-tip {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-top: 200rpx;
+  padding: 160rpx 40rpx;
 }
 
-.empty-image {
-  width: 240rpx;
-  height: 240rpx;
+.login-icon {
+  font-size: 80rpx;
+  margin-bottom: 24rpx;
+}
+
+.login-text {
+  font-size: 28rpx;
+  color: #999;
   margin-bottom: 40rpx;
+}
+
+.btn-login {
+  background: linear-gradient(135deg, #FF6B00 0%, #FF8C3A 100%);
+  color: #fff;
+  border-radius: 40rpx;
+  padding: 16rpx 80rpx;
+  font-size: 28rpx;
+}
+
+.btn-login::after { border: none; }
+
+/* ===== 顶部Tab ===== */
+.tab-bar {
+  display: flex;
+  background: #fff;
+  border-bottom: 1rpx solid #eee;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.tab {
+  flex: 1;
+  text-align: center;
+  padding: 28rpx 0;
+  font-size: 30rpx;
+  color: #666;
+  position: relative;
+}
+
+.tab.active {
+  color: #FF6B00;
+  font-weight: 600;
+}
+
+.tab.active::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 48rpx;
+  height: 6rpx;
+  background: #FF6B00;
+  border-radius: 3rpx;
+}
+
+/* ===== 新建预约入口 ===== */
+.list-section {
+  padding: 20rpx 24rpx;
+}
+
+.add-entry {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fff;
+  border-radius: 12rpx;
+  padding: 28rpx;
+  margin-bottom: 20rpx;
+  border: 2rpx dashed #FF6B00;
+  box-shadow: 0 2rpx 8rpx rgba(255, 107, 0, 0.08);
+}
+
+.add-icon {
+  font-size: 40rpx;
+  color: #FF6B00;
+  margin-right: 12rpx;
+  font-weight: 700;
+}
+
+.add-text {
+  font-size: 28rpx;
+  color: #FF6B00;
+  font-weight: 500;
+}
+
+/* ===== 加载 & 空状态 ===== */
+.loading {
+  text-align: center;
+  padding: 80rpx 0;
+  color: #999;
+  font-size: 28rpx;
+}
+
+.empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 100rpx 0;
+}
+
+.empty-icon {
+  font-size: 72rpx;
+  margin-bottom: 16rpx;
 }
 
 .empty-text {
   font-size: 30rpx;
   color: #999;
-  margin-bottom: 40rpx;
+  margin-bottom: 8rpx;
+}
+
+.empty-hint {
+  font-size: 26rpx;
+  color: #bbb;
+}
+
+/* ===== 预约卡片 ===== */
+.card {
+  background: #fff;
+  border-radius: 12rpx;
+  margin-bottom: 20rpx;
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20rpx 24rpx;
+  border-bottom: 1rpx solid #f0f0f0;
+}
+
+.status-tag {
+  padding: 6rpx 16rpx;
+  border-radius: 6rpx;
+  font-size: 24rpx;
+  font-weight: 500;
+}
+
+.status-pending {
+  background: #fff7e6;
+  color: #fa8c16;
+}
+
+.status-confirmed {
+  background: #e6f7ff;
+  color: #1890ff;
+}
+
+.status-completed {
+  background: #f6ffed;
+  color: #52c41a;
+}
+
+.status-cancelled {
+  background: #f5f5f5;
+  color: #999;
+}
+
+.create-time {
+  font-size: 24rpx;
+  color: #999;
+}
+
+.card-content {
+  padding: 20rpx 24rpx;
+}
+
+.info-row {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 12rpx;
+  font-size: 28rpx;
+  line-height: 1.5;
+}
+
+.info-row:last-child {
+  margin-bottom: 0;
+}
+
+.label {
+  color: #999;
+  min-width: 140rpx;
+}
+
+.value {
+  color: #333;
+  flex: 1;
+}
+
+.value.highlight {
+  color: #FF6B00;
+  font-weight: 500;
+}
+
+.value.phone {
+  color: #1890ff;
+}
+
+.value.remark {
+  color: #666;
+  font-size: 26rpx;
+  background: #f5f5f5;
+  padding: 8rpx 12rpx;
+  border-radius: 4rpx;
+}
+
+/* ===== 操作按钮 ===== */
+.card-actions {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 20rpx 24rpx;
+  border-top: 1rpx solid #f0f0f0;
+  gap: 16rpx;
+}
+
+.btn-action {
+  padding: 0 28rpx;
+  height: 60rpx;
+  line-height: 60rpx;
+  border-radius: 8rpx;
+  font-size: 26rpx;
+  margin: 0;
+  background: #fff;
+  border: 1rpx solid #d9d9d9;
+  color: #333;
+}
+
+.btn-action::after { border: none; }
+
+.btn-cancel {
+  border-color: #fa8c16;
+  color: #fa8c16;
+}
+
+.btn-call {
+  background: #f0f0f0;
+  border-color: #d9d9d9;
 }

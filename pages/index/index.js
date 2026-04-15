@@ -33,14 +33,25 @@ Page({
       timeout: 10000,
       success(res) {
         if (res.data && res.data.code === 0) {
-          const products = res.data.data.slice(0, 4).map(p => ({
-            id: p.id,
-            name: p.name,
-            desc: p.description,
-            price: p.priceText || p.price,
-            tag: p.tag,
-            image: app.globalData.apiBaseUrl + p.images[0] || '/images/banner-zdla.png'
-          }))
+          const products = res.data.data.slice(0, 4).map(p => {
+            const img = p.images && p.images[0]
+            let image = '/images/banner-zdla.png'
+            if (img) {
+              if (img.startsWith('/api/uploads/')) {
+                image = app.globalData.apiBaseUrl + img
+              } else  {
+                image = img
+              }
+            }
+            return {
+              id: p.id,
+              name: p.name,
+              desc: p.description,
+              price: p.priceText || p.price,
+              tag: p.tag,
+              image: image
+            }
+          })
           that.setData({ hotProducts: products, loading: false })
         } else {
           that.setData({ error: '加载失败', loading: false })

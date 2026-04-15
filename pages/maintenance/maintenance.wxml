@@ -1,0 +1,100 @@
+<!--pages/maintenance/maintenance.wxml - 保养预约表单-->
+<view class="container">
+  <!-- 车型信息 -->
+  <view class="form-section">
+    <view class="section-title">车辆信息</view>
+    <view class="form-item">
+      <text class="label">品牌</text>
+      <text class="value-text">海宝</text>
+    </view>
+  </view>
+
+  <!-- 服务类型 -->
+  <view class="form-section">
+    <view class="section-title">服务类型 <text class="selected-type" wx:if="{{formData.service_type}}">已选：{{formData.service_type}}</text></view>
+    <view class="service-grid">
+      <view class="service-item {{formData.service_type === item.value ? 'active' : ''}}"
+            wx:for="{{serviceTypes}}" wx:key="value"
+            data-value="{{item.value}}" bindtap="selectServiceType">
+        <text class="service-icon">{{item.icon}}</text>
+        <text class="service-name">{{item.name}}</text>
+        <text class="service-desc">{{item.desc}}</text>
+        <text class="check-icon" wx:if="{{formData.service_type === item.value}}">✓</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 联系信息 -->
+  <view class="form-section">
+    <view class="section-title">联系信息</view>
+
+    <view class="form-item">
+      <text class="label"><text class="required">*</text>姓名</text>
+      <input class="input" placeholder="请输入您的姓名" data-field="user_name" bindinput="onInput" value="{{formData.user_name}}"/>
+    </view>
+
+    <view class="form-item">
+      <text class="label"><text class="required">*</text>手机号</text>
+      <input class="input" type="number" placeholder="请输入手机号" maxlength="11" data-field="user_phone" bindinput="onInput" value="{{formData.user_phone}}"/>
+    </view>
+  </view>
+
+  <!-- 预约时间 -->
+  <view class="form-section">
+    <view class="section-title">预约时间</view>
+
+    <view class="form-item">
+      <text class="label"><text class="required">*</text>预约日期</text>
+      <picker mode="date" start="{{minDate}}" bindchange="onDateChange" value="{{formData.appointment_date}}">
+        <view class="picker">
+          <text class="{{formData.appointment_date ? '' : 'placeholder'}}">
+            {{formData.appointment_date || '请选择日期'}}
+          </text>
+          <text class="picker-arrow">›</text>
+        </view>
+      </picker>
+    </view>
+
+    <view class="form-item">
+      <text class="label"><text class="required">*</text>预约时间</text>
+      <picker mode="selector" range="{{timeOptions}}" range-key="label" bindchange="onTimeChange" value="{{timeIndex}}">
+        <view class="picker">
+          <text class="{{formData.appointment_time ? '' : 'placeholder'}}">
+            {{formData.appointment_time || '请选择时间段'}}
+          </text>
+          <text class="picker-arrow">›</text>
+        </view>
+      </picker>
+    </view>
+
+    <view class="form-item">
+      <text class="label">备注</text>
+      <textarea class="textarea" placeholder="车辆问题描述或其他需求（选填）" data-field="remark" bindinput="onInput" value="{{formData.remark}}" maxlength="200"/>
+    </view>
+  </view>
+
+  <!-- 门店信息 -->
+  <view class="store-section" wx:if="{{storeInfo}}">
+    <view class="section-title">服务门店</view>
+    <view class="store-card">
+      <view class="store-row" bindtap="goToStore">
+        <text class="store-icon">📍</text>
+        <text class="store-text">{{storeInfo.address}}</text>
+        <text class="store-arrow">›</text>
+      </view>
+      <view class="store-row" bindtap="callService">
+        <text class="store-icon">📞</text>
+        <text class="store-text">{{storeInfo.name}}</text>
+        <text class="store-phone-btn">致电</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 提交按钮 -->
+  <view class="submit-section">
+    <button class="submit-btn {{submitting ? 'disabled' : ''}}" bindtap="handleSubmit" disabled="{{submitting}}">
+      {{submitting ? '提交中...' : '提交预约'}}
+    </button>
+    <text class="submit-tip">提交后门店将尽快与您联系确认</text>
+  </view>
+</view>

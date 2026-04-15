@@ -68,7 +68,20 @@ Page({
       url: app.globalData.apiBaseUrl + '/api/products',
       success: (res) => {
         if (res.data && res.data.code === 0) {
-          this.setData({ products: res.data.data })
+          // 处理图片 URL
+          const products = res.data.data.map(p => {
+            const img = p.images && p.images[0]
+            let displayImage = '/images/banner-h2zm.jpg'
+            if (img) {
+              if (img.startsWith('/api/uploads/')) {
+                displayImage = app.globalData.apiBaseUrl + img
+              } else  {
+                displayImage = img
+              }
+            }
+            return { ...p, displayImage }
+          })
+          this.setData({ products })
         }
       }
     })
