@@ -114,7 +114,7 @@
 }
 
 .service-item {
-  width: calc(50% - 10rpx);
+  width: calc(50% - 100rpx);
   background: #f8f8f8;
   border-radius: 16rpx;
   padding: 24rpx;

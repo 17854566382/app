@@ -1,13 +1,13 @@
 <!--pages/maintenance/maintenance.wxml - 保养预约表单-->
 <view class="container">
   <!-- 车型信息 -->
-  <view class="form-section">
+  <!-- <view class="form-section">
     <view class="section-title">车辆信息</view>
     <view class="form-item">
       <text class="label">品牌</text>
       <text class="value-text">海宝</text>
     </view>
-  </view>
+  </view> -->
 
   <!-- 服务类型 -->
   <view class="form-section">
