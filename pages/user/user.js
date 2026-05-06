@@ -65,7 +65,7 @@ Page({
   // 获取手机号（用户点击按钮授权）
   getPhoneNumber(e) {
     if (e.detail.errMsg !== 'getPhoneNumber:ok') {
-      wx.showToast({ title: '需要授权手机号', icon: 'none' })
+      wx.showToast({ title: '请绑定手机号', icon: 'none' })
       return
     }
 
@@ -93,7 +93,7 @@ Page({
           userInfo.phone = '17854566382'
           console.log(userInfo)
           this.setData({ userInfo, isAdmin: this.checkAdmin() })
-          wx.showToast({ title: '绑定成功22', icon: 'success' })
+          wx.showToast({ title: '绑定成功', icon: 'success' })
         })
         .catch((err) => {
           wx.showToast({ title: err.message || '绑定失败', icon: 'none' })
