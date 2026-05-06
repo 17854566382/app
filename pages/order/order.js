@@ -22,10 +22,6 @@ Page({
 
   checkLogin() {
     const userInfo = app.globalData.userInfo || wx.getStorageSync('userInfo')
-    // 临时：强制设置手机号方便测试
-    if (userInfo && !userInfo.phone) {
-      userInfo.phone = '17854566382'
-    }
     const phone = userInfo && userInfo.phone ? userInfo.phone : ''
     this.setData({ 
       userInfo: userInfo || null, 
@@ -186,7 +182,6 @@ Page({
 
   // 保养状态文字
   getMaintenanceStatusText(status) {
-    console.log(status);
     const map = {
       'pending': '待确认',
       'confirmed': '已确认',

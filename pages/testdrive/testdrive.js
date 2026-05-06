@@ -49,12 +49,6 @@ Page({
       this.setData({ productId: options.id })
       this.loadProduct(options.id)
     }
-    if (options.name) {
-      this.setData({ productName: decodeURIComponent(options.name) })
-    }
-    if (options.image) {
-      this.setData({ productImage: decodeURIComponent(options.image) })
-    }
   },
 
   loadProduct(id) {

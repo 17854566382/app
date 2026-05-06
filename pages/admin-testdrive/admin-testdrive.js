@@ -149,7 +149,7 @@ Page({
 
   doUpdateStatus(id, status) {
     wx.request({
-      url: app.globalData.apiBaseUrl + '/api/test-drives/' + id,
+      url: app.globalData.apiBaseUrl + '/api/test-drives/' + id + '/status',
       method: 'PUT',
       data: { status },
       success: (res) => {

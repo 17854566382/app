@@ -125,10 +125,8 @@ Page({
     const product = this.data.product
     if (!product) return
     
-    const imageUrl = this.data.currentImages[0] || ''
-    
     wx.navigateTo({
-      url: `/pages/testdrive/testdrive?id=${product.id}&name=${encodeURIComponent(product.name)}&image=${encodeURIComponent(imageUrl)}`
+      url: `/pages/testdrive/testdrive?id=${product.id}`
     })
   },
 
@@ -137,7 +135,7 @@ Page({
     return {
       title: product ? product.name + ' - 海宝新能源' : '海宝新能源',
       path: '/pages/index/index',
-      imageUrl: this.data.currentImages[0] || ''
+      imageUrl: this.data.currentImages[0] || '/images/banner-h2zm.jpg'
     }
   }
 })

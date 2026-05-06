@@ -306,10 +306,6 @@ Page({
   handleSubmit() {
     const { formData, editingId } = this.data
     
-    // 调试：打印当前数据
-    console.log('formData:', JSON.stringify(formData, null, 2))
-    console.log('colorGroups:', formData.colorGroups)
-    
     // 验证必填项
     if (!formData.name.trim()) {
       return wx.showToast({ title: '请输入商品名称', icon: 'none' })
