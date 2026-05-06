@@ -154,7 +154,7 @@ Page({
   checkAdmin() {
     // 简单判断：已登录且手机号匹配管理员
     const userInfo = app.globalData.userInfo || wx.getStorageSync('userInfo')
-    const adminPhones = ['18605482818','17854566382'] // 管理员手机号列表
+    const adminPhones = ['18605482818','17854566382','18753846353'] // 管理员手机号列表
     return userInfo && userInfo.phone && adminPhones.includes(userInfo.phone)
   },
 
