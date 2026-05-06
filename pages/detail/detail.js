@@ -54,19 +54,37 @@ Page({
     })
   },
 
+  // 解析图片URL：处理不同来源的图片路径
+  resolveImageUrl(img) {
+    if (!img) return ''
+    // 完整URL（http/https开头）
+    if (img.startsWith('http://') || img.startsWith('https://')) return img
+    // 服务器上传的文件路径
+    if (img.startsWith('/api/uploads/')) return app.globalData.apiBaseUrl + img
+    // 小程序本地资源路径（如 /images/xxx.png）
+    if (img.startsWith('/images/')) return img
+    // 其他以/开头的路径尝试拼接API地址
+    if (img.startsWith('/')) return app.globalData.apiBaseUrl + img
+    // 无效路径（wxfile:// 等临时路径）返回空
+    return ''
+  },
+
   // 根据颜色获取对应的图片
   getImagesForColor(product, color) {
+    let images = []
     // 优先从 colorGroups 获取该颜色的专属图片
     if (product.colorGroups && product.colorGroups.length > 0 && color) {
       const group = product.colorGroups.find(g => g.colorName === color.name)
       if (group && group.images && group.images.length > 0) {
-        // 如果该颜色有专属图片，使用专属图片
-        return group.images.map(img => img.startsWith('http') ? img : app.globalData.apiBaseUrl + img)
+        images = group.images
       }
     }
     // 降级到 product.images
-    const images = product.images || []
-    return images.map(img => img.startsWith('http') ? img : app.globalData.apiBaseUrl + img)
+    if (images.length === 0) {
+      images = product.images || []
+    }
+    // 解析所有图片URL，过滤掉无效的
+    return images.map(img => this.resolveImageUrl(img)).filter(img => img)
   },
 
   selectColor(e) {

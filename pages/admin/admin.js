@@ -416,7 +416,7 @@ Page({
     }
 
     return Promise.all(tempImages.map(img => this.uploadSingleImage(img)))
-      .then(uploaded => [...remoteImages, ...uploaded])
+      .then(uploaded => [...remoteImages, ...uploaded.filter(u => u !== null)])
   },
 
   uploadSingleImage(filePath) {
@@ -428,17 +428,20 @@ Page({
         success: (res) => {
           try {
             const data = JSON.parse(res.data)
-            if (data.code === 0) {
+            if (data.code === 0 && data.url) {
               resolve(data.url)
             } else {
-              resolve(filePath)
+              console.error('上传失败:', data.message || data.error)
+              resolve(null)  // 上传失败返回null，不存临时路径
             }
           } catch (e) {
-            resolve(filePath)
+            console.error('解析上传响应失败:', e)
+            resolve(null)
           }
         },
-        fail: () => {
-          resolve(filePath)
+        fail: (err) => {
+          console.error('上传请求失败:', err)
+          resolve(null)  // 网络失败返回null，不存临时路径
         }
       })
     })
