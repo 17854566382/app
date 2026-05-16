@@ -10,9 +10,9 @@
       </view>
     </view>
     
-    <!-- 未登录：显示微信登录按钮（同时获取手机号） -->
+    <!-- 未登录：显示手机号快捷登录按钮 -->
     <button wx:if="{{!isLogin}}" class="btn-login" open-type="getPhoneNumber" bindgetphonenumber="getPhoneNumber" loading="{{loading}}">
-      微信一键登录
+      手机号快捷登录
     </button>
     
     <!-- 已登录但未绑定手机：显示手机号授权按钮 -->
