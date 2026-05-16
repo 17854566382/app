@@ -64,12 +64,16 @@ Page({
 
   // 获取手机号（用户点击按钮授权）
   getPhoneNumber(e) {
+    console.log('=== 手机号授权回调 ===')
+    console.log('e.detail:', JSON.stringify(e.detail))
+    
     if (e.detail.errMsg !== 'getPhoneNumber:ok') {
       wx.showToast({ title: '已取消授权', icon: 'none' })
       this.setData({ loading: false })
       return
     }
 
+    console.log('授权码 code:', e.detail.code)
     this.setData({ loading: true })
 
     // 先确保已登录
@@ -79,11 +83,14 @@ Page({
 
     loginPromise
       .then(() => {
+        console.log('登录状态确认，开始绑定手机号...')
         // 登录成功后再绑定手机号
         return app.getPhoneNumber(e.detail.code)
       })
       .then((userInfo) => {
-        //   userInfo.phone = '17854566382'
+        console.log('绑定成功，返回的 userInfo:', JSON.stringify(userInfo))
+        console.log('手机号:', userInfo?.phone)
+        
         this.setData({ 
           userInfo, 
           isLogin: true,
@@ -93,6 +100,7 @@ Page({
         wx.showToast({ title: '登录成功', icon: 'success' })
       })
       .catch((err) => {
+        console.error('登录/绑定失败:', err)
         this.setData({ loading: false })
         wx.showToast({ title: err.message || '登录失败', icon: 'none' })
       })

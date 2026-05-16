@@ -105,6 +105,10 @@ App({
   getPhoneNumber(code) {
     return new Promise((resolve, reject) => {
       const token = wx.getStorageSync('token')
+      console.log('=== app.getPhoneNumber ===')
+      console.log('发送到后端的 code:', code)
+      console.log('当前 token:', token)
+      
       if (!token) {
         reject(new Error('请先登录'))
         return
@@ -120,16 +124,21 @@ App({
           code: code  // 微信手机号授权码
         },
         success: (res) => {
+          console.log('后端返回完整数据:', JSON.stringify(res.data))
           if (res.data && res.data.code === 0) {
             const userInfo = res.data.data
+            console.log('解析后的 userInfo:', JSON.stringify(userInfo))
+            console.log('手机号字段:', userInfo?.phone)
             wx.setStorageSync('userInfo', userInfo)
             this.globalData.userInfo = userInfo
             resolve(userInfo)
           } else {
+            console.error('后端返回错误:', res.data)
             reject(new Error(res.data.message || '绑定手机号失败'))
           }
         },
         fail: (err) => {
+          console.error('请求失败:', err)
           reject(new Error('网络错误'))
         }
       })
