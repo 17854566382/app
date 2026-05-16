@@ -65,40 +65,37 @@ Page({
   // 获取手机号（用户点击按钮授权）
   getPhoneNumber(e) {
     if (e.detail.errMsg !== 'getPhoneNumber:ok') {
-      wx.showToast({ title: '请绑定手机号', icon: 'none' })
+      wx.showToast({ title: '已取消授权', icon: 'none' })
+      this.setData({ loading: false })
       return
     }
 
+    this.setData({ loading: true })
+
     // 先确保已登录
-    if (!app.isLoggedIn()) {
-      // 先进行微信登录
-      app.wxLogin()
-        .then(() => {
-          // 登录成功后再绑定手机号
-          return app.getPhoneNumber(e.detail.code)
+    const loginPromise = app.isLoggedIn() 
+      ? Promise.resolve() 
+      : app.wxLogin()
+
+    loginPromise
+      .then(() => {
+        // 登录成功后再绑定手机号
+        return app.getPhoneNumber(e.detail.code)
+      })
+      .then((userInfo) => {
+        //   userInfo.phone = '17854566382'
+        this.setData({ 
+          userInfo, 
+          isLogin: true,
+          loading: false,
+          isAdmin: this.checkAdmin() 
         })
-        .then((userInfo) => {
-          
-          this.setData({ userInfo, isAdmin: this.checkAdmin() })
-          wx.showToast({ title: '绑定成功', icon: 'success' })
-        })
-        .catch((err) => {
-          wx.showToast({ title: err.message || '绑定失败', icon: 'none' })
-        })
-    } else {
-      // 已登录，直接绑定手机号
-      app.getPhoneNumber(e.detail.code)
-        .then((userInfo) => {
-          
-          userInfo.phone = '17854566382'
-          console.log(userInfo)
-          this.setData({ userInfo, isAdmin: this.checkAdmin() })
-          wx.showToast({ title: '绑定成功', icon: 'success' })
-        })
-        .catch((err) => {
-          wx.showToast({ title: err.message || '绑定失败', icon: 'none' })
-        })
-    }
+        wx.showToast({ title: '登录成功', icon: 'success' })
+      })
+      .catch((err) => {
+        this.setData({ loading: false })
+        wx.showToast({ title: err.message || '登录失败', icon: 'none' })
+      })
   },
 
   // 退出登录

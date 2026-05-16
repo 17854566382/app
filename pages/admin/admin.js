@@ -4,10 +4,10 @@ const app = getApp()
 Page({
   data: {
     showCategoryPicker: false,
-    categoryNames: ['篷车', '三轮车', '两轮车'],
+    categoryNames: ['三轮车', '四轮车', '两轮车'],
     categories: [
-      { id: 1, name: '篷车' },
-      { id: 2, name: '三轮车' },
+      { id: 1, name: '三轮车' },
+      { id: 2, name: '四轮车' },
       { id: 3, name: '两轮车' }
     ],
     categoryIndex: 0,
@@ -33,7 +33,7 @@ Page({
       category: '',
       price: '',
       description: '',
-      tag: '',
+      tag: '热销',
       // 按颜色分组的图片
       colorGroups: [
         {
@@ -153,8 +153,8 @@ Page({
     const groups = this.data.formData.colorGroups
     this.setData({
       'formData.colorGroups': [...groups, {
-        colorName: '',
-        colorValue: '#000000',
+        colorName: '珍珠白',
+        colorValue: '#F0EEE8',
         images: []
       }]
     })
@@ -313,9 +313,10 @@ Page({
     if (!formData.category) {
       return wx.showToast({ title: '请选择分类', icon: 'none' })
     }
-    if (!formData.price) {
-      return wx.showToast({ title: '请输入价格', icon: 'none' })
-    }
+    // 价格改为非必填
+    // if (!formData.price) {
+    //   return wx.showToast({ title: '请输入价格', icon: 'none' })
+    // }
     // 验证颜色组（只要有一个颜色名+至少一张图）
     const hasValidGroup = formData.colorGroups.some(g => g.colorName && g.images.length > 0)
     if (!hasValidGroup) {
@@ -339,7 +340,7 @@ Page({
       const data = {
         name: formData.name,
         category: formData.category,
-        price: formData.price,
+        price: formData.price || '0',
         description: formData.description,
         tag: formData.tag,
         images: [coverImage], // 封面图
@@ -417,27 +418,63 @@ Page({
 
   uploadSingleImage(filePath) {
     return new Promise((resolve) => {
+      console.log('开始上传图片到:', app.globalData.apiBaseUrl + '/api/upload')
+      console.log('文件路径:', filePath)
+      
       wx.uploadFile({
         url: app.globalData.apiBaseUrl + '/api/upload',
         filePath: filePath,
         name: 'file',
         success: (res) => {
+          console.log('上传响应状态码:', res.statusCode)
+          console.log('上传响应数据:', res.data)
+          
           try {
             const data = JSON.parse(res.data)
             if (data.code === 0 && data.url) {
+              console.log('上传成功:', data.url)
               resolve(data.url)
             } else {
               console.error('上传失败:', data.message || data.error)
-              resolve(null)  // 上传失败返回null，不存临时路径
+              wx.showToast({
+                title: '上传失败: ' + (data.message || data.error || '未知错误'),
+                icon: 'none'
+              })
+              resolve(null)
             }
           } catch (e) {
             console.error('解析上传响应失败:', e)
+            console.error('原始响应:', res.data)
+            wx.showToast({
+              title: '解析响应失败',
+              icon: 'none'
+            })
             resolve(null)
           }
         },
         fail: (err) => {
           console.error('上传请求失败:', err)
-          resolve(null)  // 网络失败返回null，不存临时路径
+          console.error('错误详情:', JSON.stringify(err))
+          
+          // 提供更详细的错误提示
+          let errorMsg = '上传失败: '
+          if (err.errMsg) {
+            errorMsg += err.errMsg
+            
+            // 如果是域名白名单问题，给出明确提示
+            if (err.errMsg.includes('url not in domain list')) {
+              errorMsg = '域名未添加到白名单！请在微信后台添加 uploadFile 域名: ' + app.globalData.apiBaseUrl
+            }
+          } else {
+            errorMsg += '未知错误'
+          }
+          
+          wx.showToast({
+            title: errorMsg,
+            icon: 'none',
+            duration: 3000
+          })
+          resolve(null)
         }
       })
     })
@@ -513,11 +550,11 @@ Page({
         category: '',
         price: '',
         description: '',
-        tag: '',
+        tag: '热销',
         colorGroups: [
           {
-            colorName: '中国红',
-            colorValue: '#C0362C',
+            colorName: '珍珠白',
+            colorValue: '#F0EEE8',
             images: []
           }
         ],

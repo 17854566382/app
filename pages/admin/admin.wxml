@@ -27,7 +27,7 @@
       </view>
       
       <view class="form-item">
-        <text class="label">商品价格 *</text>
+        <text class="label">商品价格</text>
         <view class="price-input">
           <text class="price-unit">¥</text>
           <input class="input" name="price" type="digit" placeholder="0.00" value="{{formData.price}}" bindinput="onInput" data-field="price"/>

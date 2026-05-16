@@ -11,7 +11,7 @@ const products = [
   {
     id: 1,
     name: '百灵经典款',
-    category: '篷车',
+    category: '四轮车',
     desc: '续航80公里，适合日常通勤',
     price: 3200,
     priceText: '3,200',
@@ -34,7 +34,7 @@ const products = [
   {
     id: 2,
     name: '考拉豪华款',
-    category: '篷车',
+    category: '四轮车',
     desc: '续航100公里，大屏显示',
     price: 4500,
     priceText: '4,500',
@@ -57,7 +57,7 @@ const products = [
   {
     id: 3,
     name: '卡皮巴拉旗舰款',
-    category: '篷车',
+    category: '四轮车',
     desc: '续航120公里，智能防盗',
     price: 6000,
     priceText: '6,000',
@@ -80,7 +80,7 @@ const products = [
   {
     id: 4,
     name: '雨燕经济款',
-    category: '篷车',
+    category: '四轮车',
     desc: '续航60公里，性价比高',
     price: 2800,
     priceText: '2,800',

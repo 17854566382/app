@@ -5,7 +5,7 @@ Page({
   data: {
     categories: [
       { id: 0, name: '全部', icon: '' },
-      { id: 1, name: '篷车', icon: '' },
+      { id: 1, name: '四轮车', icon: '' },
       { id: 2, name: '三轮车', icon: '' },
       { id: 3, name: '两轮车', icon: '' }
     ],
